@@ -1,0 +1,15 @@
+/* app css stylesheet */
+
+body {
+  padding-top: 20px;
+}
+
+.table input, 
+.table select, 
+.table textarea {
+  width: 100%;
+}
+
+.nav-tabs {
+  margin: 0 0 30px;
+}

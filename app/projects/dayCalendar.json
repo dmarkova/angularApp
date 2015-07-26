@@ -1,0 +1,53 @@
+[
+    {   
+        "dayNumber":1,
+        "emplyees": {
+            "dmarkova": {
+                "projects": {
+                    "sol":"0.75", 
+                    "carpathia-ticket-tracking":"1", 
+                    "mercer-db":"1"
+                },
+                "dayOff":"0"
+            },
+            "szakharov": {
+                "projects": {
+                    "sol":"0.75", 
+                    "carpathia-ticket-tracking":"1", 
+                    "mercer-db":"1"
+                },
+                "dayOff":"0"
+            }
+        }
+    },
+    // { 
+    //     "id": "dmarkova", 
+    //     "name": "Daria Markova", 
+    //     "teamLead": "Sergey Rimsha", 
+    //     "location": "SPB"
+    // }, 
+    // { 
+    //     "id": "eniro-no-proff", 
+    //     "name": "EniroNOProff", 
+    //     "teamLead": "Sergey Rimsha", 
+    //     "location": "SPB"
+    // }, 
+    // { 
+    //     "id": "sol", 
+    //     "name": "Scandinavia Online", 
+    //     "teamLead": "Lyubov Fedorovich", 
+    //     "location": "SPB"
+    // }, 
+    // { 
+    //     "id": "carpathia-ticket-tracking", 
+    //     "name": "CarpathiaTicketTracking", 
+    //     "teamLead": "Dmitry Pimenov", 
+    //     "location": "SPB"
+    // }, 
+    // { 
+    //     "id": "mercer-db", 
+    //     "name": "Mercer DB", 
+    //     "teamLead": "Ebgenia Petrova", 
+    //     "location": "NN"
+    // }
+]

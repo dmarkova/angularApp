@@ -2,35 +2,35 @@
   <table class="table table-bordered">
     <thead>
       <th>Project name</th>
-      <th>TeamLead</th>
+      <th>Team Lead</th>
       <th>Location</th>
       <th ng-repeat="week in calendar">
         <span>{{week.weekNumber}} week</span>
       </th>
     </thead>
     <tbody>
-      <tr>
+      <tr class="info">
         <th colspan="3">Capacity</th>
         <td ng-repeat="week in calendar">
-          <input ng-model="week.capacity" type="text" value=""/>
+          <input ng-model="week.capacity" type="number" value=""/>
         </td>
       </tr>
       <tr ng-repeat="project in projects">
         <td>
-          <a href="#/projects/{{project.id}}">{{project.name}}</a>
+          <span>{{project.name}}</span>
         </td>
         <td>{{project.teamLead}}</td>
         <td>{{project.location}}</td>
         <td ng-repeat="week in calendar">
-          <input ng-model="week.projects[project.id]" type="text" value=""/>
+          <input ng-model="week.projects[project.id]" type="number" value=""/>
         </td>
       </tr>
     </tbody>
     <tfoot>
-      <tr>
+      <tr class="success">
         <th colspan="3">Shortfall</th>
         <td ng-repeat="week in calendar">
-          <span>{{ week.capacity - getTotal(week.projects) }}</span>
+          <span>{{ getShortfall(week.capacity, week.projects) }}</span>
         </td>
       </tr>
     </tfoot>

@@ -1,53 +1,110 @@
 [
     {   
-        "dayNumber":1,
-        "emplyees": {
+        "dayNumber":1420127784000,
+        "employees": {
             "dmarkova": {
                 "projects": {
-                    "sol":"0.75", 
-                    "carpathia-ticket-tracking":"1", 
-                    "mercer-db":"1"
+                    "sol":0.75, 
+                    "eniro-proff-no":0.25
                 },
-                "dayOff":"0"
+                "dayOff":0
             },
             "szakharov": {
                 "projects": {
-                    "sol":"0.75", 
-                    "carpathia-ticket-tracking":"1", 
-                    "mercer-db":"1"
+                    "carpathia-ticket-tracking":1
                 },
-                "dayOff":"0"
+                "dayOff":0
             }
         }
     },
-    // { 
-    //     "id": "dmarkova", 
-    //     "name": "Daria Markova", 
-    //     "teamLead": "Sergey Rimsha", 
-    //     "location": "SPB"
-    // }, 
-    // { 
-    //     "id": "eniro-no-proff", 
-    //     "name": "EniroNOProff", 
-    //     "teamLead": "Sergey Rimsha", 
-    //     "location": "SPB"
-    // }, 
-    // { 
-    //     "id": "sol", 
-    //     "name": "Scandinavia Online", 
-    //     "teamLead": "Lyubov Fedorovich", 
-    //     "location": "SPB"
-    // }, 
-    // { 
-    //     "id": "carpathia-ticket-tracking", 
-    //     "name": "CarpathiaTicketTracking", 
-    //     "teamLead": "Dmitry Pimenov", 
-    //     "location": "SPB"
-    // }, 
-    // { 
-    //     "id": "mercer-db", 
-    //     "name": "Mercer DB", 
-    //     "teamLead": "Ebgenia Petrova", 
-    //     "location": "NN"
-    // }
+    {   
+        "dayNumber":1420214184000,
+        "employees": {
+            "dmarkova": {
+                "projects": {
+                    "sol":0.75, 
+                    "eniro-proff-no":0.25
+                },
+                "dayOff":1
+            },
+            "szakharov": {
+                "projects": {
+                    "carpathia-ticket-tracking":1
+                },
+                "dayOff":0
+            }
+        }
+    },
+    {   
+        "dayNumber":1420300584000,
+        "employees": {
+            "dmarkova": {
+                "projects": {
+                    "sol":0.75, 
+                    "eniro-proff-no":0.25
+                },
+                "dayOff":1
+            },
+            "szakharov": {
+                "projects": {
+                    "carpathia-ticket-tracking":1
+                },
+                "dayOff":0
+            }
+        }
+    },
+     {   
+        "dayNumber":1420386984000,
+        "employees": {
+            "dmarkova": {
+                "projects": {
+                    "sol":0.75, 
+                    "eniro-proff-no":0.25
+                },
+                "dayOff":1
+            },
+            "szakharov": {
+                "projects": {
+                    "carpathia-ticket-tracking":1
+                },
+                "dayOff":0
+            }
+        }
+    },
+     {   
+        "dayNumber":1420473384000,
+        "employees": {
+            "dmarkova": {
+                "projects": {
+                    "sol":0.75, 
+                    "eniro-proff-no":0.25
+                },
+                "dayOff":1
+            },
+            "szakharov": {
+                "projects": {
+                    "carpathia-ticket-tracking":1
+                },
+                "dayOff":0
+            }
+        }
+    },
+     {   
+        "dayNumber":1420559784000,
+        "employees": {
+            "dmarkova": {
+                "projects": {
+                    "sol":0.75, 
+                    "eniro-proff-no":0.25
+                },
+                "dayOff":1
+            },
+            "szakharov": {
+                "projects": {
+                    "carpathia-ticket-tracking":1
+                },
+                "dayOff":0
+            }
+        }
+    }
 ]

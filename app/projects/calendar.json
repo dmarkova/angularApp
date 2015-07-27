@@ -1,72 +1,72 @@
 [
     {   
-        "weekNumber":"1",
-        "capacity":"7",
+        "weekNumber":1,
+        "capacity":7,
         "projects": {
-            "eniro-no-proff":"1.25", 
-            "sol":"0.75", 
-            "carpathia-ticket-tracking":"1", 
-            "mercer-db":"1"
+            "eniro-no-proff":1.25, 
+            "sol":0.75, 
+            "carpathia-ticket-tracking":1, 
+            "mercer-db":1
         }
     },
     {   
-        "weekNumber":"2",
-        "capacity":"7",
+        "weekNumber":2,
+        "capacity":7,
         "projects": {
-            "eniro-no-proff":"1.25", 
-            "sol":"0.75", 
-            "carpathia-ticket-tracking":"1", 
-            "mercer-db":"1"
+            "eniro-no-proff":1.25, 
+            "sol":0.75, 
+            "carpathia-ticket-tracking":1, 
+            "mercer-db":1
         }
     },
     {   
-        "weekNumber":"3",
-        "capacity":"7",
+        "weekNumber":3,
+        "capacity":7,
         "projects": {
-            "eniro-no-proff":"1.25", 
-            "sol":"0.75", 
-            "carpathia-ticket-tracking":"1", 
-            "mercer-db":"1"
+            "eniro-no-proff":1.25, 
+            "sol":0.75, 
+            "carpathia-ticket-tracking":1, 
+            "mercer-db":1
         }
     },
     {   
-        "weekNumber":"4",
-        "capacity":"7",
+        "weekNumber":4,
+        "capacity":7,
         "projects": {
-            "eniro-no-proff":"1.25", 
-            "sol":"0.75", 
-            "carpathia-ticket-tracking":"1", 
-            "mercer-db":"1"
+            "eniro-no-proff":1.25, 
+            "sol":0.75, 
+            "carpathia-ticket-tracking":1, 
+            "mercer-db":1
         }
     },
     {   
-        "weekNumber":"5",
-        "capacity":"7",
+        "weekNumber":5,
+        "capacity":7,
         "projects": {
-            "eniro-no-proff":"1.25", 
-            "sol":"0.75", 
-            "carpathia-ticket-tracking":"1", 
-            "mercer-db":"1"
+            "eniro-no-proff":1.25, 
+            "sol":0.75, 
+            "carpathia-ticket-tracking":1, 
+            "mercer-db":1
         }
     },
     {   
-        "weekNumber":"6",
-        "capacity":"7",
+        "weekNumber":6,
+        "capacity":7,
         "projects": {
-            "eniro-no-proff":"1.25", 
-            "sol":"0.75", 
-            "carpathia-ticket-tracking":"1", 
-            "mercer-db":"1"
+            "eniro-no-proff":1.25, 
+            "sol":0.75, 
+            "carpathia-ticket-tracking":1, 
+            "mercer-db":1
         }
     },
     {   
-        "weekNumber":"7",
-        "capacity":"7",
+        "weekNumber":7,
+        "capacity":7,
         "projects": {
-            "eniro-no-proff":"1.25", 
-            "sol":"0.75", 
-            "carpathia-ticket-tracking":"1", 
-            "mercer-db":"1"
+            "eniro-no-proff":1.25, 
+            "sol":0.75, 
+            "carpathia-ticket-tracking":1, 
+            "mercer-db":1
         }
     }
 ]

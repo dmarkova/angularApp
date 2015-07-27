@@ -5,31 +5,36 @@
 var capacityControllers = angular.module('capacityControllers', []);
 
 
-capacityControllers.controller('TabsController', ['$scope', '$http',
-  function($scope, $http) {
+capacityControllers.controller('TabsController', ['$rootScope','$scope', '$state', 
+  function($rootScope,$scope,$state) {
     $scope.tabs = [
       { 
-        link : '#/projects', 
-        label : 'Projects' 
+        heading: "Projects", 
+        route:"main.projects",
+        active:false
       },
-      { link : '#/employees', 
-        label : 'Employees' 
+      { 
+        heading: "Employees", 
+        route:"main.employees",
+        active:false
       }
     ]; 
     
-  $scope.selectedTab = $scope.tabs[0];    
-  $scope.setSelectedTab = function(tab) {
-    $scope.selectedTab = tab;
+    $scope.go = function(route){
+        $state.go(route);
+    };
+
+    $scope.active = function(route){
+        return $state.is(route);
+    };
+
+    $scope.$on("$stateChangeSuccess", function() {
+        $scope.tabs.forEach(function(tab) {
+            tab.active = $scope.active(tab.route);
+        });
+    });
   }
-  
-  $scope.tabClass = function(tab) {
-    if ($scope.selectedTab == tab) {
-      return "active";
-    } else {
-      return "";
-    }
-  }
-}]);
+]);
 
 
 capacityControllers.controller('ProjectsListController', ['$scope', '$http',
@@ -41,12 +46,17 @@ capacityControllers.controller('ProjectsListController', ['$scope', '$http',
       $scope.calendar = data;
     });
 
-    $scope.getTotal = function(item){
-      var total = 0;
-      angular.forEach(item,function(value, key) {
-          total += parseFloat(value);
+    $scope.getShortfall = function(capacity, projects){
+      var totalHours = 0,
+          result = 0;
+      angular.forEach(projects,function(value, key) {
+          if (value) {
+            totalHours += parseFloat(value);
+          }
       });
-      return total;
+      result = capacity - totalHours;
+      result = parseFloat(result.toPrecision(12));
+      return result;
     };
 
   }]);
@@ -56,4 +66,33 @@ capacityControllers.controller('ProjectInfoController', ['$scope', '$routeParams
     $http.get('projects/' + $routeParams.projectId + '.json').success(function(data) {
       $scope.project = data;
     });
+  }]);
+
+capacityControllers.controller('EmployeesListController', ['$scope', '$http',
+  function($scope, $http) {
+    $http.get('projects/dayCalendar.json').success(function(data) {
+      $scope.calendar = data;
+    });
+    $http.get('projects/projects.json').success(function(data) {
+      $scope.projects = data;
+    });
+    $http.get('projects/employees.json').success(function(data) {
+      $scope.employees = data;
+    });
+
+    $scope.getTotal = function(employee) {
+      var totalHours = 0,
+          result = 0;
+      angular.forEach(employee.projects,function(value, key) {
+        if (value) {
+          totalHours += parseFloat(value);
+        }
+      });
+      if (employee.dayOff) {
+        totalHours += parseFloat(employee.dayOff);
+      }
+      result = 1 - totalHours;
+      result = parseFloat(result.toPrecision(12));
+      return result;
+    }
   }]);

@@ -37,14 +37,11 @@ capacityControllers.controller('TabsController', ['$rootScope','$scope', '$state
 ]);
 
 
-capacityControllers.controller('ProjectsListController', ['$scope', '$http',
-  function($scope, $http) {
-    $http.get('projects/projects.json').success(function(data) {
-      $scope.projects = data;
-    });
-    $http.get('projects/calendar.json').success(function(data) {
-      $scope.calendar = data;
-    });
+capacityControllers.controller('ProjectsListController', ['$scope', '$http', 'projectsService', 'calendarService', 'employeesService',
+  function($scope, $http, projectsService, calendarService, employeesService) {
+    $scope.projects = projectsService.query();
+    $scope.calendar = calendarService.query();
+    $scope.employees = employeesService.query();
 
     $scope.getShortfall = function(capacity, projects){
       var totalHours = 0,
@@ -58,6 +55,61 @@ capacityControllers.controller('ProjectsListController', ['$scope', '$http',
       result = parseFloat(result.toPrecision(12));
       return result;
     };
+
+    //Toolbar controller
+    // $scope.project = {};
+    $scope.project = new projectsService();
+    $scope.datePicker = {};
+
+    $scope.today = function() {
+      $scope.projectStart = new Date();
+      $scope.projectEnd = new Date();
+    };
+    $scope.today();
+
+    $scope.format = 'dd MMMM yyyy';
+
+    $scope.startOptions = {
+      startingDay: 1
+    };
+
+    $scope.endOptions = {
+      startingDay: 1
+    };
+
+    $scope.open = function($event,opened) {
+      $event.preventDefault();
+      $event.stopPropagation();
+
+      $scope.datePicker[opened] = true;
+    };
+
+ 
+    $scope.addProject = function() {
+      $scope.project.start = Math.floor($scope.project.start.getTime());
+      $scope.project.end = Math.floor($scope.project.end.getTime());
+      $scope.projects.push($scope.project);
+      $scope.project = new projectsService();
+
+      //POST to server
+      // $scope.project.$save();
+    };
+    
+    $scope.capacities = [
+      { 
+        capacity: "",
+        start: "",
+        end: ""
+      }
+    ];
+    $scope.addCapacity = function() {
+      $scope.capacities.push({ 
+        capacity: "",
+        start: "",
+        end: ""
+      });
+    };
+
 
   }]);
 
@@ -97,15 +149,18 @@ capacityControllers.controller('EmployeesListController', ['$scope', '$http',
     }
   }]);
 
-capacityControllers.controller('ToolbarController', ['$scope',  '$http',
-  function($scope, $http) {
+capacityControllers.controller('ToolbarController', ['$scope',  '$http', 'projectsService', 'employeesService',
+  function($scope, $http, projectsService, employeesService) {
+    
+    // $scope.project = {};
+    $scope.project = new projectsService();
 
-    $http.get('projects/employees.json').success(function(data) {
-      $scope.employees = data;
-    });
-    $http.get('projects/projects.json').success(function(data) {
-      $scope.projects = data;
-    });
+    $scope.projects = projectsService.query();
+    $scope.employees = employeesService.query();
+
+    // employeesService.list(function(employees) {
+    //   $scope.employees = employees;
+    // });
 
     $scope.today = function() {
       $scope.projectStart = new Date();
@@ -134,13 +189,14 @@ capacityControllers.controller('ToolbarController', ['$scope',  '$http',
       $event.stopPropagation();
       $scope.openedEnd = true;
     };
-
+ 
     $scope.addProject = function() {
-      $scope.projects.push({});
+      $scope.project.$save();
+      $scope.project = new projectsService();
     };
     
     $scope.addEmployee = function() {
-    
+      
     };
 
 }]);

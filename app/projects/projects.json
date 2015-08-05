@@ -2,25 +2,33 @@
     { 
         "id": "eniro-no-proff", 
         "name": "EniroNOProff", 
-        "teamLead": "Sergey Rimsha", 
-        "location": "SPB"
+        "lead": "Sergey Rimsha", 
+        "location": "SPB",
+        "start":"1420127784000",
+        "end":"1420386984000"
     }, 
     { 
         "id": "sol", 
         "name": "Scandinavia Online", 
-        "teamLead": "Lyubov Fedorovich", 
-        "location": "SPB"
+        "lead": "Lyubov Fedorovich", 
+        "location": "SPB",
+        "start":"1420127784000",
+        "end":"1420386984000"
     }, 
     { 
         "id": "carpathia-ticket-tracking", 
         "name": "CarpathiaTicketTracking", 
-        "teamLead": "Dmitry Pimenov", 
-        "location": "SPB"
+        "lead": "Dmitry Pimenov", 
+        "location": "SPB",
+        "start":"1420300584000",
+        "end":"1420559784000"
     }, 
     { 
         "id": "mercer-db", 
         "name": "Mercer DB", 
-        "teamLead": "Ebgenia Petrova", 
-        "location": "NN"
+        "lead": "Ebgenia Petrova", 
+        "location": "NN",
+        "start":"1420300584000",
+        "end":"1420559784000"
     }
 ]

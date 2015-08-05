@@ -13,3 +13,7 @@ body {
 .nav-tabs {
   margin: 0 0 30px;
 }
+
+.panel-body + .panel-body {
+	border-top: 1px solid #ddd;
+}

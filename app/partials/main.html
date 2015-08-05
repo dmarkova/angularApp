@@ -1,14 +1,111 @@
-<div ng-controller="TabsController">
+<div class="row">
+	<div class="col-md-9" ng-controller="TabsController">
 
-    <tabset>
-        <tab 
-            ng-repeat="tab in tabs" 
-            heading="{{tab.heading}}"
-            select="go(tab.route)"
-            active="tab.active">
-        </tab>
-    </tabset>
+	    <tabset>
+	        <tab 
+	            ng-repeat="tab in tabs" 
+	            heading="{{tab.heading}}"
+	            select="go(tab.route)"
+	            active="tab.active">
+	        </tab>
+	    </tabset>
 
-    <div class="tab-content" ui-view></div>
+	    <div class="tab-content" ui-view></div>
 
+	</div>
+	<div class="col-md-3" ng-controller="ToolbarController">
+		<accordion close-others="oneAtATime">
+			<accordion-group heading="Add project" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+		     	<form name="projectForm" ng-submit="addProject()" novalidate>
+					<div class="form-group">
+						<label for="project_name">Project name:</label>
+						<input ng-model="projectName" type="text" class="form-control" id="project_name" required>
+					</div>
+					<div class="form-group">
+						<label for="project_lead">Team Lead:</label>
+						<input ng-model="projectLead" type="text" class="form-control" id="project_lead">
+					</div>
+					<div class="form-group">
+						<label for="project_location">Project location:</label>
+						<input ng-model="projectLocation"  type="text" class="form-control" id="project_location">
+					</div>
+					
+					<div class="form-group">
+						<label for="project_start">Start date:</label>
+						<div class="input-group">
+							<input id="project_start" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="projectStart" is-open="openedStart" min-date="minDate" datepicker-options="startOptions" ng-required="true" close-text="Close" />
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default" ng-click="openStart($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+							</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="project_end">End date:</label>
+						<div class="input-group">
+							<input id="project_end" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="projectEnd" is-open="openedEnd" min-date="projectStart" datepicker-options="endOptions" ng-required="true" close-text="Close" />
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default" ng-click="openEnd($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+							</span>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary"  ng-disabled="projectForm.$invalid">Submit</button>
+				</form>
+		    </accordion-group>
+
+		    <accordion-group heading="Add capacity" is-open="status.isSecondOpen" is-disabled="status.isSecondDisabled">
+		    	<ng-form name="capacityForm">
+		    		<div class="form-group">
+						<label for="cap_project">Project:</label>
+						<select id="cap_project" class="form-control" ng-model="capProject"
+						    ng-options="project.name for project in projects"></select>
+					</div>
+					<div class="form-group">
+						<label for="cap_employee">Employee:</label>
+						<select id="cap_employee" class="form-control" ng-model="capEmployee"
+						    ng-options="employee.name for employee in employees"></select>
+					</div>
+
+					<hr>
+
+
+					<div class="form-group">
+						<div class="row">
+							<div class="col-md-8">
+								<label for="cap_value">Capacity:</label>
+							</div>
+							<div class="col-md-4 text-right">
+								<button type="button" class="btn btn-success btn-sm"><i class="glyphicon glyphicon-plus"></i></button>
+							</div>
+						</div>
+						<input id="cap_value" class="form-control" ng-model="capValue"
+						    ng-model="capValue"></select>
+					</div>
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="project_start">Start date:</label>
+							<div class="input-group">
+								<input id="project_start" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="projectStart" is-open="openedStart" min-date="minDate" datepicker-options="startOptions" ng-required="true" close-text="Close" />
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="openStart($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								</span>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="project_end">End date:</label>
+							<div class="input-group">
+								<input id="project_end" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="projectEnd" is-open="openedEnd" min-date="projectStart" datepicker-options="endOptions" ng-required="true" close-text="Close" />
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="openEnd($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								</span>
+							</div>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary">Submit</button>
+
+			    </ng-form>
+		    </accordion-group>
+		</accordion>
+	</div>
 </div>
+
+

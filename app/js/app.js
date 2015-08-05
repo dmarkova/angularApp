@@ -5,7 +5,7 @@
 var capacityApp = angular.module('capacityApp', ["ui.router", "ui.bootstrap","capacityControllers"]);
 
 capacityApp.config(function($stateProvider, $urlRouterProvider) {
-     $urlRouterProvider.otherwise("/main/projects");
+    $urlRouterProvider.otherwise("/main/projects");
 
      $stateProvider
       .state("main", { 
@@ -22,25 +22,6 @@ capacityApp.config(function($stateProvider, $urlRouterProvider) {
           url: '/employees', 
           templateUrl: 'partials/employees-list.html',
           controller: 'EmployeesListController'
-        })
+        });
 
-      // when('/projects', {
-      //   templateUrl: 'partials/projects-list.html',
-      //   controller: 'ProjectsListController'
-      // }).
-      // when('/projects/:projectId', {
-      //   templateUrl: 'partials/project-info.html',
-      //   controller: 'ProjectInfoController'
-      // }).
-      // when('/employees', {
-      //   templateUrl: 'partials/employees-list.html',
-      //   controller: 'employeesListCtrl'
-      // }).
-      // when('/employees/:employeeId', {
-      //   templateUrl: 'partials/employee-info.html',
-      //   controller: 'employeeInfoCtrl'
-      // }).
-      // otherwise({
-      //   redirectTo: '/projects'
-      // });
   });

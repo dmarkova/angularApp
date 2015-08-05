@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var capacityControllers = angular.module('capacityControllers', []);
+var capacityControllers = angular.module('capacityControllers', ['ui.bootstrap', 'ui.multiselect']);
 
 
 capacityControllers.controller('TabsController', ['$rootScope','$scope', '$state', 
@@ -96,3 +96,51 @@ capacityControllers.controller('EmployeesListController', ['$scope', '$http',
       return result;
     }
   }]);
+
+capacityControllers.controller('ToolbarController', ['$scope',  '$http',
+  function($scope, $http) {
+
+    $http.get('projects/employees.json').success(function(data) {
+      $scope.employees = data;
+    });
+    $http.get('projects/projects.json').success(function(data) {
+      $scope.projects = data;
+    });
+
+    $scope.today = function() {
+      $scope.projectStart = new Date();
+      $scope.projectEnd = new Date();
+    };
+    $scope.today();
+
+    $scope.format = 'dd MMMM yyyy';
+
+    $scope.startOptions = {
+      startingDay: 1
+    };
+
+    $scope.endOptions = {
+      startingDay: 1
+    };
+
+    $scope.openStart = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      $scope.openedStart = true;
+    };
+
+    $scope.openEnd = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      $scope.openedEnd = true;
+    };
+
+    $scope.addProject = function() {
+      $scope.projects.push({});
+    };
+    
+    $scope.addEmployee = function() {
+    
+    };
+
+}]);

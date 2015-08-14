@@ -1,34 +1,133 @@
 [
     { 
-        "id": "eniro-no-proff", 
+        "id": 1, 
         "name": "EniroNOProff", 
         "lead": "Sergey Rimsha", 
         "location": "SPB",
-        "start":"1420127784000",
-        "end":"1420386984000"
+        "start":1420127784000,
+        "end":1423319186000,
+        "status": "current",
+        "employees": {
+            "1": {
+                "capacity":  [
+                    {
+                    "value":0.75, 
+                    "start":1420127784000,
+                    "end":1422195986000
+                    },
+                    {
+                    "value":0.25, 
+                    "start":1423319186000,
+                    "end":1423319186000
+                    }
+                ]
+            },
+            "2": {
+                "capacity": [{
+                    "value":4, 
+                    "start":1420127784000,
+                    "end":1423319186000
+                }]
+            }
+        }
     }, 
     { 
-        "id": "sol", 
+        "id": 2, 
         "name": "Scandinavia Online", 
         "lead": "Lyubov Fedorovich", 
         "location": "SPB",
-        "start":"1420127784000",
-        "end":"1420386984000"
+        "start":1420127784000,
+        "end":1420386984000,
+        "status": "pending",
+        "employees": {
+            "1": {
+                "capacity":  [
+                    {
+                    "value":0.75, 
+                    "start":1420127784000,
+                    "end":1420386984000
+                    },
+                    {
+                    "value":0.25, 
+                    "start":1420386984000,
+                    "end":1420559784000
+                    }
+                ]
+            },
+            "2": {
+                "capacity": [{
+                    "value":0.25, 
+                    "start":1420127784000,
+                    "end":1420559784000
+                }]
+                
+            }
+        }
     }, 
     { 
-        "id": "carpathia-ticket-tracking", 
+        "id": 3, 
         "name": "CarpathiaTicketTracking", 
         "lead": "Dmitry Pimenov", 
         "location": "SPB",
-        "start":"1420300584000",
-        "end":"1420559784000"
+        "start":1420300584000,
+        "end":1420559784000,
+        "status": "current",
+        "employees": {
+            "1": {
+                "capacity":  [
+                    {
+                    "value":0.75, 
+                    "start":1420127784000,
+                    "end":1420386984000
+                    },
+                    {
+                    "value":0.25, 
+                    "start":1420386984000,
+                    "end":1420559784000
+                    }
+                ]
+            },
+            "2": {
+                "capacity": [{
+                    "value":0.25, 
+                    "start":1420127784000,
+                    "end":1420559784000
+                }]
+                
+            }
+        }
     }, 
     { 
-        "id": "mercer-db", 
+        "id": 4, 
         "name": "Mercer DB", 
         "lead": "Ebgenia Petrova", 
         "location": "NN",
-        "start":"1420300584000",
-        "end":"1420559784000"
+        "start":1420300584000,
+        "end":1420559784000,
+        "status": "current",
+        "employees": {
+            "1": {
+                "capacity":  [
+                    {
+                    "value":0.75, 
+                    "start":1420127784000,
+                    "end":1420386984000
+                    },
+                    {
+                    "value":0.25, 
+                    "start":1420386984000,
+                    "end":1420559784000
+                    }
+                ]
+            },
+            "2": {
+                "capacity": [{
+                    "value":0.25, 
+                    "start":1420127784000,
+                    "end":1420559784000
+                }]
+                
+            }
+        }
     }
 ]

@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var capacityApp = angular.module('capacityApp', ["ui.router", "ui.bootstrap","capacityControllers", "capacityAppServices", "ngResource"]);
+var capacityApp = angular.module('capacityApp', ["ui.router", "ui.bootstrap","capacityControllers", "capacityAppServices", "ngResource", "capacityAppFilters","capacityAppDirectives"]);
 
 capacityApp.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/main/projects");

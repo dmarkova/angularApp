@@ -1,17 +1,17 @@
 [
     { 
-        "id": "dmarkova", 
+        "id": 1, 
         "name": "Daria Markova",
         "projects": [
-           	"sol",
-            "eniro-proff-no"
+           	"1",
+            "2"
         ]
     }, 
     { 
-        "id": "szakharov", 
+        "id": 2, 
         "name": "Stepan Zakharov",
         "projects": [
-            "carpathia-ticket-tracking"
+            "3"
         ]
     }
 ]

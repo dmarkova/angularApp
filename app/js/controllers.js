@@ -37,8 +37,8 @@ capacityControllers.controller('TabsController', ['$rootScope','$scope', '$state
 ]);
 
 
-capacityControllers.controller('ProjectsListController', ['$scope', '$http', 'projectsService','employeesService', '$filter', 'dateCalcService',
-  function($scope, $http, projectsService, employeesService, $filter, dateCalcService) {
+capacityControllers.controller('ProjectsListController', ['$scope', 'projectsService','employeesService', '$filter', 'dateCalcService',
+  function($scope, projectsService, employeesService, $filter, dateCalcService) {
 
     $scope.projects = projectsService.projects();
     $scope.employees = employeesService.employees();
@@ -103,17 +103,35 @@ capacityControllers.controller('ProjectInfoController', ['$scope', '$routeParams
     });
   }]);
 
-capacityControllers.controller('EmployeesListController', ['$scope', '$http',
-  function($scope, $http) {
-    $http.get('projects/dayCalendar.json').success(function(data) {
-      $scope.calendar = data;
-    });
-    $http.get('projects/projects.json').success(function(data) {
-      $scope.projects = data;
-    });
-    $http.get('projects/employees.json').success(function(data) {
-      $scope.employees = data;
-    });
+capacityControllers.controller('EmployeesListController', ['$scope', 'projectsService', 'employeesService', 'dateCalcService',
+  function($scope, projectsService, employeesService, dateCalcService) {
+    
+    $scope.projects = projectsService.projects();
+    $scope.employees = employeesService.employees();
+
+    $scope.dateRange = {
+      startDate: "1 January",
+      endDate: "31 December",
+      year: "2015"
+    };
+   
+
+    $scope.calendar = [];
+
+    function createCalendar() {
+      var startDate = new Date($scope.dateRange.year + ' ' +  $scope.dateRange.startDate),
+          endDate = new Date($scope.dateRange.year + ' ' +  $scope.dateRange.endDate),
+          nextDate = new Date(startDate);
+
+      // date = dateCalcService.createTimestamp(startDate);
+      // endDate = dateCalcService.createTimestamp(endDate);
+        
+      while (nextDate <= endDate) {
+        $scope.calendar.push(dateCalcService.createTimestamp(nextDate));
+        nextDate.setDate(nextDate.getDate()+1);
+      }
+    };
+    createCalendar();
 
     $scope.getTotal = function(employee) {
       var totalHours = 0,
@@ -133,7 +151,7 @@ capacityControllers.controller('EmployeesListController', ['$scope', '$http',
   }]);
 
 capacityControllers.controller('ProjectAddController', ['$scope',  '$http', 'projectsService', 'datepickerService', 'dateCalcService',
-  function($scope, $http, projectsService, datepickerService,dateCalcService) {
+  function($scope, $http, projectsService, datepickerService, dateCalcService) {
     $scope.projects = projectsService.projects();
 
     $scope.project = {};
@@ -269,58 +287,6 @@ capacityControllers.controller('CapacityAddController', ['$scope',  '$http', 'pr
 
 }]);
 
-capacityControllers.controller('ToolbarController', ['$scope',  '$http', 'projectsService', 'employeesService',
-  function($scope, $http, projectsService, employeesService) {
-    
-    // $scope.project = {};
-    $scope.project = new projectsService();
-
-    $scope.projects = projectsService.query();
-    $scope.employees = employeesService.query();
-
-    // employeesService.list(function(employees) {
-    //   $scope.employees = employees;
-    // });
-
-    $scope.today = function() {
-      $scope.projectStart = new Date();
-      $scope.projectEnd = new Date();
-    };
-    $scope.today();
-
-    $scope.format = 'dd MMMM yyyy';
-
-    $scope.startOptions = {
-      startingDay: 1
-    };
-
-    $scope.endOptions = {
-      startingDay: 1
-    };
-
-    $scope.openStart = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-      $scope.openedStart = true;
-    };
-
-    $scope.openEnd = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-      $scope.openedEnd = true;
-    };
- 
-    $scope.addProject = function() {
-      $scope.project.$save();
-      $scope.project = new projectsService();
-    };
-    
-    $scope.addEmployee = function() {
-      
-    };
-
-}]);
-
 capacityControllers.controller('EmployeeAddController', ['$scope', 'employeesService','dateCalcService', 
   function($scope, employeesService,dateCalcService) {
     $scope.employees = employeesService.employees();
@@ -341,3 +307,117 @@ capacityControllers.controller('EmployeeAddController', ['$scope', 'employeesSer
     };
 
 }]);
+
+capacityControllers.controller('PrivateCapacityAddController', ['$scope',  '$http', 'employeesService', '$filter', 'datepickerService',
+  function($scope, $http, employeesService, $filter, datepickerService) {
+    $scope.employees = employeesService.employees();
+
+    $scope.datepickerSettings = datepickerService;
+
+    //for datepicker entries inside ng-repeat
+    $scope.openStart = function($event, dt) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      dt.openedStart = true;
+    };
+    $scope.openEnd = function($event, dt) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      dt.openedEnd = true;
+    };
+
+    $scope.capEmployee = {};
+    $scope.capEmployee.vacations = [
+      { 
+        start: "",
+        end: ""
+      }
+    ];
+    $scope.capEmployee.dayoffs = [
+      { 
+        date: ""
+      }
+    ];
+
+
+    function initialLoadVacation() {
+      $scope.capEmployee.vacations = [
+        { 
+          start: "",
+          end: ""
+        }
+      ];
+    };
+    function initialLoadDayoff() {
+      $scope.capEmployee.dayoffs = [
+        { 
+          date: ""
+        }
+      ];
+    };
+    initialLoadVacation(0);
+    initialLoadDayoff(0);
+
+    // $scope.capProject.capacity[0].start = $scope.project.start;
+    // $scope.capProject.capacity[0].end = $scope.project.end;
+
+    $scope.addVacation = function() {
+      $scope.capEmployee.vacations.push({
+        start: "",
+        end: ""
+      });
+    };
+    $scope.addDayoff = function() {
+      $scope.capEmployee.dayoffs.push({ 
+        date: ""
+      });
+    };
+
+    $scope.removeCapacity = function(index) {
+      $scope.capEmployee.capacity.splice(index, 1);
+    };
+
+    $scope.savePrivateCapacity = function() {
+      var employeeSelected = $filter('getById')($scope.employees, $scope.capEmployee.employee);
+
+      angular.forEach($scope.capEmployee.vacations, function(item) {
+
+        item.start = Math.floor(item.start.getTime());
+        item.end = Math.floor(item.end.getTime());
+
+        employeesService.addPrivateCapacity(employeeSelected, "vacations", item);
+
+        employeesService.addPrivateCapacity(employeeSelected, "dayoffs", item);
+
+        // projectSelected.employees[employeeID].capacity.push(item);
+      });
+
+      $scope.capProject = {};
+      initialLoadVacation();
+      initialLoadDayoff();
+
+      // Set back to pristine.
+      $scope.forms.privateCapacityForm.$setPristine();
+      // Since Angular 1.3, set back to untouched state.
+      $scope.forms.privateCapacityForm.$setUntouched();
+
+      // $scope.capProject.start = Math.floor($scope.capProject.start.getTime());
+      // $scope.capProject.end = Math.floor($scope.capProject.end.getTime());
+      // $scope.capProject.value = parseFloat($scope.capProject.value);
+       // $scope.projects.
+      // $scope.projects.push($scope.capProject);
+
+  
+      // $scope.projects.get({id:$scope.capProject.id}, function(project) {
+      //   project.push($scope.capEmployee);
+      //   project.$save();
+      // });
+      // $scope.project = new projectsService();
+
+      //POST to server
+      // $scope.project.$save();
+    };
+
+
+}]);
+

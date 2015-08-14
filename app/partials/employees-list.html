@@ -9,7 +9,7 @@
       <tr>
         <th>Name</th>
         <th ng-repeat="day in calendar">
-          <span>{{day.dayNumber | date:'d MMM' }}</span>
+          <span>{{day | date:'d MMM' }}</span>
         </th>
       </tr>
     </thead>
@@ -19,7 +19,7 @@
           <span>{{employee.name}}</span>
         </td>
         <th ng-repeat="day in calendar">
-          <span>{{ getTotal(day.employees[employee.id]) }}</span>
+          <!-- <span>{{ getTotal(day.employees[employee.id]) }}</span> -->
         </th>
       </tr>
       <tr ng-repeat="project in employee.projects">
@@ -27,7 +27,7 @@
           <span>{{project}}</span>
         </td>
         <td ng-repeat="day in calendar">
-          <input ng-model="day.employees[employee.id].projects[project]" type="text" value=""/>
+          <span>{{ day.employees[employee.id].projects[project] }}</span>
         </td>
       </tr>
       <tr class="warning">
@@ -35,7 +35,7 @@
           <span>Vacation & day off & sick</span>
         </td>
         <td ng-repeat="day in calendar">
-          <input ng-model="day.employees[employee.id].dayOff" type="text" value=""/>
+          <span>{{ day.employees[employee.id].dayOff }}</span>
         </td>
       </tr>
     </tbody>

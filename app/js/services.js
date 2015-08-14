@@ -14,7 +14,7 @@ angular.module('capacityAppServices', [])
 // });
 
 
-.service('employeesService', function () {
+.service('employeesService', ['$filter', function ($filter) {
     var data = [
 	    { 
 	        "id": 1, 
@@ -22,14 +22,28 @@ angular.module('capacityAppServices', [])
 	        "projects": [
 	           	"1",
 	            "2"
-	        ]
+	        ],
+	        vacations {
+				"start":1423319186000,
+                "end":1423319186000
+	        },
+	        dayoffs {
+	        	"date":1423319186000
+	        }
 	    }, 
 	    { 
 	        "id": 2, 
 	        "name": "Stepan Zakharov",
 	        "projects": [
 	            "3"
-	        ]
+	        ],
+	        vacations {
+				"start":1420127784000,
+                "end":1423319186000
+	        },
+	        dayoffs {
+	        	"date":1420127784000
+	        }
 	    }
     ];
 
@@ -44,9 +58,16 @@ angular.module('capacityAppServices', [])
         },
         deleteEmployee:function (id) {
             // This is a public function that modifies private data
+        },
+        addPrivateCapacity:function (employeeSelected, value, item) {
+            // This is a public function that modifies private data
+        	if (!employeeSelected[value]) {
+	          employeeSelected[value] = [];
+	        }
+			employeeSelected[value].push(item);
         }
     };
-})
+}])
 
 .service('projectsService', ['$filter', function ($filter) {
     var data = [

@@ -19,31 +19,47 @@ angular.module('capacityAppServices', [])
 	    { 
 	        "id": 1, 
 	        "name": "Daria Markova",
-	        "projects": [
-	           	"1",
-	            "2"
+	        "vacations": [
+				{
+					"start":1420059600000,
+                	"end":1423319186000
+                }
 	        ],
-	        vacations {
-				"start":1423319186000,
-                "end":1423319186000
-	        },
-	        dayoffs {
-	        	"date":1423319186000
-	        }
+	        "dayoffs": [
+	        	{
+	        		"date":1423319186000
+	        	}
+	        ]
 	    }, 
 	    { 
 	        "id": 2, 
 	        "name": "Stepan Zakharov",
-	        "projects": [
-	            "3"
+	        "vacations": [
+	        	{
+					"start":1420059600000,
+	                "end":1423319186000
+	            }
 	        ],
-	        vacations {
-				"start":1420127784000,
-                "end":1423319186000
-	        },
-	        dayoffs {
-	        	"date":1420127784000
-	        }
+	        "dayoffs": [
+	        	{
+	        		"date":1420127784000
+	        	}
+	        ]
+	    }, 
+	    { 
+	        "id": 3, 
+	        "name": "Natalia Lastukhina",
+	        "vacations": [
+	        	{
+					"start":1420059600000,
+	                "end":1423319186000
+	            }
+	        ],
+	        "dayoffs": [
+	        	{
+	        		"date":1420127784000
+	        	}
+	        ]
 	    }
     ];
 
@@ -96,7 +112,7 @@ angular.module('capacityAppServices', [])
 	            },
 	            "2": {
 	                "capacity": [{
-	                    "value":4, 
+	                    "value":1, 
 	                    "start":1420127784000,
 	                    "end":1423319186000
 	                }]
@@ -125,14 +141,6 @@ angular.module('capacityAppServices', [])
 	                    "end":1420559784000
 	                    }
 	                ]
-	            },
-	            "2": {
-	                "capacity": [{
-	                    "value":0.25, 
-	                    "start":1420127784000,
-	                    "end":1420559784000
-	                }]
-	                
 	            }
 	        }
 	    }, 
@@ -145,20 +153,6 @@ angular.module('capacityAppServices', [])
 	        "end":1420559784000,
 	        "status": "current",
 	        "employees": {
-	            "1": {
-	                "capacity":  [
-	                    {
-	                    "value":0.75, 
-	                    "start":1420127784000,
-	                    "end":1420386984000
-	                    },
-	                    {
-	                    "value":0.25, 
-	                    "start":1420386984000,
-	                    "end":1420559784000
-	                    }
-	                ]
-	            },
 	            "2": {
 	                "capacity": [{
 	                    "value":0.25, 
@@ -178,7 +172,7 @@ angular.module('capacityAppServices', [])
 	        "end":1420559784000,
 	        "status": "current",
 	        "employees": {
-	            "1": {
+	            "3": {
 	                "capacity":  [
 	                    {
 	                    "value":0.75, 
@@ -191,14 +185,6 @@ angular.module('capacityAppServices', [])
 	                    "end":1420559784000
 	                    }
 	                ]
-	            },
-	            "2": {
-	                "capacity": [{
-	                    "value":0.25, 
-	                    "start":1420127784000,
-	                    "end":1420559784000
-	                }]
-	                
 	            }
 	        }
 	    }
@@ -226,6 +212,11 @@ angular.module('capacityAppServices', [])
 	            "capacity": []
 	          };
 	        }
+	        if (!projectSelected.employees[employeeid]) {
+	          projectSelected.employees[employeeid] = {
+	            "capacity": []
+	          };
+	        }
 
 			projectSelected.employees[employeeid].capacity.push(item);
         }
@@ -242,7 +233,7 @@ angular.module('capacityAppServices', [])
 	}
 })
 
-.service('dateCalcService',  ['$filter', function ($filter) {
+.service('dateCalcService',  ['$filter', '$resource', function ($filter, $resource) {
 	var dateCalcService = {};
 
     dateCalcService.createTimestamp = function(date) {
@@ -266,5 +257,77 @@ angular.module('capacityAppServices', [])
 		return month;
     };
 
+	dateCalcService.daysInMonth = function (month,year,actual) {
+		var monthCounter = new Date(year, month, 0).getDate(),
+			today = new Date(),
+			todayDay = $filter('date')(today, "d"),
+			todayMonth = $filter('date')(today, "M");
+
+		if (actual && month == todayMonth) {
+    		return monthCounter - todayDay;
+    	} else {
+    		return monthCounter;
+    	}
+    };
+    dateCalcService.weeksInMonth = function (month,year,actual) {
+		var monthCounter = new Date(year, month, 0).getDate(),
+			monthName = $filter('monthName')(month),
+			lastDate = new Date(monthCounter + ' ' + monthName + ' ' + year),
+			firstDate = new Date(1 + ' ' + monthName + ' ' + year),
+			weekCounter = dateCalcService.getWeek(lastDate) - dateCalcService.getWeek(firstDate) + 1,
+			today = new Date(),
+			todayWeek = dateCalcService.getWeek(today),
+			todayMonth = $filter('date')(today, "M");
+
+		if (actual && month == todayMonth) {
+    		return weekCounter - todayWeek + 1;
+    	} else {
+    		return weekCounter;
+    	}
+    };
+
+    dateCalcService.checkActualDay = function (day) {
+    	var today = new Date();
+    	return day.date < today;
+    };
+    dateCalcService.checkActualMonth = function (month) {
+    	var today = new Date(),
+    		todayMonth = $filter('date')(today, "M");
+    	return month < todayMonth;
+    };
+    dateCalcService.checkActualWeek = function (week) {
+    	var today = new Date(),
+    		todayWeek = dateCalcService.getWeek(today);
+    	return week < todayWeek;
+    };
+
+    dateCalcService.getCalendar = function (year) {
+    	var dateRange = {
+	      startDate: "1 January",
+	      endDate: "31 December"
+	    },
+   		startDate = new Date(year + ' ' + dateRange.startDate),
+		endDate = new Date(year + ' ' +  dateRange.endDate),
+		nextDate = new Date(startDate),
+		calendarResource = [],
+		calendar = [];
+
+		calendarResource = $resource('projects/calendar-'+ year + '.json');
+		calendar = calendarResource.query();
+		calendar.$promise.then(function (result) {
+		    calendar = result;
+		}, function (error) {
+			while (nextDate <= endDate) {
+				var dateObj = {};
+				dateObj.date = dateCalcService.createTimestamp(nextDate);
+				calendar.push(dateObj);
+				nextDate.setDate(nextDate.getDate()+1);
+			}
+		});
+
+		return calendar;
+		
+	};
+
     return dateCalcService;
-}])
+}]);

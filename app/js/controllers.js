@@ -50,12 +50,24 @@ capacityControllers.controller('ProjectsListController', ['$scope', 'projectsSer
     $scope.employeeNumber = $scope.employees.length;
 
     $scope.forms = {};
+    $scope.numberMonths = 12;
 
     $scope.date = {
       year: 2015,
       startDate: "1 January",
       endDate: "31 December"
     };
+
+    $scope.year = 2015;
+
+    $scope.actual = true;
+    $scope.expandTable = function() {
+        $scope.actual = !$scope.actual;
+    };
+
+    $scope.$watch('actual', function(){
+      $scope.expandBtnText = $scope.actual ? 'Show full year!' : 'Hide full year';
+    })
 
     $scope.getMonth = dateCalcService.getMonth;
 
@@ -66,16 +78,25 @@ capacityControllers.controller('ProjectsListController', ['$scope', 'projectsSer
     };
     $scope.numberWeeksArray = $scope.getNumber($scope.numberWeeks);
 
+    $scope.getMonthLength = function(month, year, actual) {
+      return dateCalcService.weeksInMonth(month, year, actual);
+    };
+    $scope.checkActualMonth = function(month) {
+      return dateCalcService.checkActualMonth(month);
+    };
+    $scope.checkActualWeek = function(week) {
+      return dateCalcService.checkActualWeek(week);
+    };
 
-    $scope.getShortfall = function(capacity, projects){
+    $scope.getShortfall = function(week){
       var totalHours = 0,
           result = 0;
-      angular.forEach(projects,function(value, key) {
-          if (value) {
-            totalHours += parseFloat(value);
-          }
+
+      angular.forEach($scope.projects,function(project) {
+          totalHours += $scope.getCapacity(project, week);
       });
-      result = capacity - totalHours;
+
+      result = $scope.employeeNumber - totalHours;
       result = parseFloat(result.toPrecision(12));
       return result;
     };
@@ -103,51 +124,96 @@ capacityControllers.controller('ProjectInfoController', ['$scope', '$routeParams
     });
   }]);
 
-capacityControllers.controller('EmployeesListController', ['$scope', 'projectsService', 'employeesService', 'dateCalcService',
-  function($scope, projectsService, employeesService, dateCalcService) {
+capacityControllers.controller('EmployeesListController', ['$scope', 'projectsService', 'employeesService', 'dateCalcService', '_', '$filter',
+  function($scope, projectsService, employeesService, dateCalcService, _, $filter) {
     
     $scope.projects = projectsService.projects();
     $scope.employees = employeesService.employees();
 
-    $scope.dateRange = {
-      startDate: "1 January",
-      endDate: "31 December",
-      year: "2015"
+    $scope.calendar = dateCalcService.getCalendar(2015);
+    $scope.numberMonths = 12;
+
+    $scope.year = 2015;
+    
+    $scope.actual = true;
+
+    $scope.getMonthLength = function(month, year, actual) {
+      return dateCalcService.daysInMonth(month, year, actual);
+    };    
+
+    $scope.checkActualDay = function(day) {
+      return dateCalcService.checkActualDay(day);
     };
-   
-
-    $scope.calendar = [];
-
-    function createCalendar() {
-      var startDate = new Date($scope.dateRange.year + ' ' +  $scope.dateRange.startDate),
-          endDate = new Date($scope.dateRange.year + ' ' +  $scope.dateRange.endDate),
-          nextDate = new Date(startDate);
-
-      // date = dateCalcService.createTimestamp(startDate);
-      // endDate = dateCalcService.createTimestamp(endDate);
-        
-      while (nextDate <= endDate) {
-        $scope.calendar.push(dateCalcService.createTimestamp(nextDate));
-        nextDate.setDate(nextDate.getDate()+1);
-      }
+    $scope.checkActualMonth = function(month) {
+      return dateCalcService.checkActualMonth(month);
     };
-    createCalendar();
+    $scope.getNumber = function(num) {
+        return new Array(num);   
+    };
+    
+    $scope.expandTable = function() {
+        $scope.actual = !$scope.actual;
+    };
 
-    $scope.getTotal = function(employee) {
+    $scope.$watch('actual', function(){
+      $scope.expandBtnText = $scope.actual ? 'Show full year!' : 'Hide full year';
+    })
+
+    $scope.getTotal = function(employee, day) {
       var totalHours = 0,
           result = 0;
-      angular.forEach(employee.projects,function(value, key) {
-        if (value) {
-          totalHours += parseFloat(value);
-        }
+
+      angular.forEach($scope.employeeProjects(employee),function(project) {
+        totalHours += $scope.getDayCapacity(project,employee,day);
       });
-      if (employee.dayOff) {
-        totalHours += parseFloat(employee.dayOff);
-      }
+
+      totalHours += $scope.getDayOff(employee, day);
+
       result = 1 - totalHours;
       result = parseFloat(result.toPrecision(12));
       return result;
-    }
+    };
+
+    $scope.employeeProjects = function(employee) {
+      return _.filter($scope.projects, function(project){ 
+        return project.employees[employee.id]; 
+      });
+    };
+
+    $scope.checkDayRange = function(capacity, day){
+      return (day >= capacity.start) && (day <= capacity.end);
+    };
+    $scope.checkDay = function(capacity, day){
+      return day == capacity.date;
+    };
+
+    $scope.getDayCapacity = function(project, employee, day){
+      var total = 0;
+
+      angular.forEach(project.employees[employee.id].capacity,function(item) {
+       if ($scope.checkDayRange(item, day.date)) {
+          total += item.value;
+        };
+      });
+      return total;
+    };
+    $scope.getDayOff = function(employee, day){
+      var total = 0;
+
+      angular.forEach(employee.vacations,function(item) {
+       if ($scope.checkDayRange(item, day.date)) {
+          total = 1;
+        };
+      });
+      angular.forEach(employee.dayoffs,function(item) {
+       if ($scope.checkDay(item, day.date)) {
+          total = 1;
+        };
+      });
+      
+      return total;
+    };
+
   }]);
 
 capacityControllers.controller('ProjectAddController', ['$scope',  '$http', 'projectsService', 'datepickerService', 'dateCalcService',
@@ -387,6 +453,12 @@ capacityControllers.controller('PrivateCapacityAddController', ['$scope',  '$htt
 
         employeesService.addPrivateCapacity(employeeSelected, "vacations", item);
 
+        // projectSelected.employees[employeeID].capacity.push(item);
+      });
+
+      angular.forEach($scope.capEmployee.dayoffs, function(item) {
+
+        item.date = Math.floor(item.date.getTime());
         employeesService.addPrivateCapacity(employeeSelected, "dayoffs", item);
 
         // projectSelected.employees[employeeID].capacity.push(item);

@@ -1,19 +1,27 @@
-<span>{{date.year}}, {{date.month}}</span>
+<div class="btn-group">
+  <button type="button" class="btn btn-success btn-sm" ng-click="expandTable()">{{ expandBtnText }}</button>
+</div>
 
 <div class="table-responsive">
   <table class="table table-bordered">
     <thead>
-      <th>Project name</th>
-      <th>Team Lead</th>
-      <th>Location</th>
-      <th ng-repeat="i in numberWeeksArray track by $index">
-        <span>{{$index + 1}} week, {{getMonth($index + 1, date.year)}}</span>
-      </th>
+      <tr>
+        <td colspan = '3'></td> 
+        <th ng-repeat="i in getNumber(numberMonths) track by $index" colspan="{{getMonthLength($index + 1, year, actual)}}" ng-hide="checkActualMonth($index + 1) && actual">{{ $index + 1 | monthName}}</th>
+      </tr>
+      <tr>
+        <th>Project name</th>
+        <th>Team Lead</th>
+        <th>Location</th>
+        <th ng-repeat="i in numberWeeksArray track by $index" ng-hide="checkActualWeek($index + 1) && actual">
+          <span>{{$index + 1}} week, {{getMonth($index + 1, date.year)}}</span>
+        </th>
+      </tr>
     </thead>
     <tbody>
       <tr class="info">
         <th colspan="3">Capacity</th>
-        <td ng-repeat="week in getNumber(numberWeeks) track by $index">
+        <td ng-repeat="week in getNumber(numberWeeks) track by $index" ng-hide="checkActualWeek($index + 1) && actual">
           <span>{{employeeNumber}}</span>
         </td>
       </tr>
@@ -23,16 +31,16 @@
         </td> 
         <td>{{project.lead}}</td>
         <td>{{project.location}}</td>
-        <td ng-repeat="week in numberWeeksArray track by $index" ng-class="{success: (checkWeek(project, $index + 1) && project.status == 'current') , warning: (checkWeek(project, $index + 1) && project.status == 'pending'), danger: (!checkWeek(project, $index + 1) && getCapacity(project, $index + 1) != 0)}">
+        <td ng-repeat="week in numberWeeksArray track by $index" ng-class="{success: (checkWeek(project, $index + 1) && project.status == 'current') , warning: (checkWeek(project, $index + 1) && project.status == 'pending'), danger: (!checkWeek(project, $index + 1) && getCapacity(project, $index + 1) != 0)}" ng-hide="checkActualWeek($index + 1) && actual">
           <span>{{getCapacity(project, $index + 1)}}</span>
         </td>
       </tr>
     </tbody>
     <tfoot>
-      <tr class="success">
-        <th colspan="3">Shortfall</th>
-        <td ng-repeat="week in calendar">
-          <span>{{ getShortfall(week.capacity, week.projects) }}</span>
+      <tr>
+        <th colspan="3" class="info">Shortfall</th>
+        <td ng-repeat="week in getNumber(numberWeeks) track by $index" ng-class="{success: (getShortfall($index + 1) > 0), danger: (getShortfall($index + 1) < 0)}" ng-hide="checkActualWeek($index + 1) && actual">
+          <span>{{ getShortfall($index + 1) }}</span>
         </td>
       </tr>
     </tfoot>

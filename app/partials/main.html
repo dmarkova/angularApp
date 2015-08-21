@@ -159,7 +159,7 @@
 	                <div class="form-group col-md-6">
 	                  <label for="{{'vacation_end-'+$index}}">End date:</label>
 	                  <div class="input-group">
-	                    <input id="{{'vacation_end-'+$index}}" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="vacation.end" is-open="vacation.openedEnd" min-date="vacation.start" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" show-weeks="true" ng-required="true" />
+	                    <input id="{{'vacation_end-'+$index}}" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="vacation.end" is-open="vacation.openedEnd" min-date="vacation.start" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" show-weeks="true" ng-required="true" />
 	                    <span class="input-group-btn">
 	                      <button type="button" class="btn btn-default" ng-click="openEnd($event, vacation)"><i class="glyphicon glyphicon-calendar"></i></button>
 	                    </span>
@@ -179,9 +179,9 @@
 					<div class="form-group">
 					  <label for="{{'dayoff_date-'+$index}}">Date:</label>
 					  <div class="input-group">
-					    <input id="{{'dayoff_date-'+$index}}" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="dayoff.date" is-open="datepickerSettings.openedDate" min-date="minDate" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" show-weeks="true" ng-required="true"/>
+					    <input id="{{'dayoff_date-'+$index}}" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="dayoff.date" is-open="dayoff.openedStart" min-date="minDate" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" show-weeks="true" ng-required="true"/>
 					    <span class="input-group-btn">
-					      <button type="button" class="btn btn-default" ng-click="open($event, 'openedDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+					      <button type="button" class="btn btn-default" ng-click="openStart($event, dayoff)"><i class="glyphicon glyphicon-calendar"></i></button>
 					    </span>
 					  </div>
 					</div>

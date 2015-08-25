@@ -269,21 +269,28 @@ angular.module('capacityAppServices', [])
     		return monthCounter;
     	}
     };
-    dateCalcService.weeksInMonth = function (month,year,actual) {
-		var monthCounter = new Date(year, month, 0).getDate(),
+    dateCalcService.weeksInMonth = function (month,calendar,actual) {
+		var 
 			monthName = $filter('monthName')(month),
-			lastDate = new Date(monthCounter + ' ' + monthName + ' ' + year),
-			firstDate = new Date(1 + ' ' + monthName + ' ' + year),
-			weekCounter = dateCalcService.getWeek(lastDate) - dateCalcService.getWeek(firstDate) + 1,
+			weekCounter,
 			today = new Date(),
 			todayWeek = dateCalcService.getWeek(today),
 			todayMonth = $filter('date')(today, "M");
 
-		if (actual && month == todayMonth) {
-    		return weekCounter - todayWeek + 1;
-    	} else {
-    		return weekCounter;
-    	}
+		if (calendar) {
+			weekCounter = function() {
+				return _.filter(calendar, function(week){ 
+		        	return week.month[month]; 
+		      	});
+			};
+			weekCounter = weekCounter.length;
+
+			if (actual && month == todayMonth) {
+	    		return weekCounter - todayWeek + 1;
+	    	} else {
+	    		return weekCounter;
+	    	}
+	    }
     };
 
     dateCalcService.checkActualDay = function (day) {
@@ -325,6 +332,31 @@ angular.module('capacityAppServices', [])
 			}
 		});
 
+		return calendar;
+		
+	};
+
+	dateCalcService.getWeekCalendar = function (year) {
+		var dateRange = {
+				startDate: "1 January",
+				endDate: "31 December"
+			},
+			numberWeeks =  parseInt(dateCalcService.getWeek(new Date(year + ' ' +  dateRange.endDate))),
+			calendarResource = [],
+			calendar = [];
+
+		calendarResource = $resource('projects/calendar-week-'+ year + '.json');
+		calendar = calendarResource.query();
+		calendar.$promise.then(function (result) {
+		    calendar = result;
+		}, function (error) {
+			for (var i = 1; i <= numberWeeks; i++) {
+				var dateObj = {};
+				dateObj.number = i;
+				dateObj.month = dateCalcService.getMonth(i,year);
+				calendar.push(dateObj);
+			}
+		});
 		return calendar;
 		
 	};

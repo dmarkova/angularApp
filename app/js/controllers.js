@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var capacityControllers = angular.module('capacityControllers', ['ui.bootstrap', 'ui.multiselect']);
+var capacityControllers = angular.module('capacityControllers', ['ui.bootstrap']);
 
 
 capacityControllers.controller('TabsController', ['$rootScope','$scope', '$state', 
@@ -117,12 +117,17 @@ capacityControllers.controller('ProjectsListController', ['$scope', 'projectsSer
     };
   }]);
 
-capacityControllers.controller('ProjectInfoController', ['$scope', '$routeParams', '$http',
-  function($scope, $routeParams, $http) {
-    $http.get('projects/' + $routeParams.projectId + '.json').success(function(data) {
-      $scope.project = data;
-    });
-  }]);
+capacityControllers.controller('ProjectController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
+  function($scope, $stateParams, projectsService, employeesService, $filter) {
+    $scope.projects = projectsService.projects();
+    $scope.project = $filter('getById')($scope.projects, $stateParams.projectId);
+}]);
+
+capacityControllers.controller('EmployeeController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
+  function($scope, $stateParams, projectsService, employeesService, $filter) {
+    $scope.employees = employeesService.employees();
+    $scope.employee = $filter('getById')($scope.employees, $stateParams.employeeId);
+}]);
 
 capacityControllers.controller('EmployeesListController', ['$scope', 'projectsService', 'employeesService', 'dateCalcService', '_', '$filter',
   function($scope, projectsService, employeesService, dateCalcService, _, $filter) {
@@ -241,7 +246,7 @@ capacityControllers.controller('ProjectAddController', ['$scope',  '$http', 'pro
     $scope.addProject = function() {
       $scope.project.start = dateCalcService.createTimestamp($scope.project.start);
       $scope.project.end = dateCalcService.createTimestamp($scope.project.end);
-      $scope.project.id = dateCalcService.createTimestamp(new Date());
+      $scope.project.id = $scope.project.name.replace(/\s+/g, '-').toLowerCase();
 
       projectsService.addProject($scope.project);
       // $scope.projects.push($scope.project);
@@ -361,7 +366,7 @@ capacityControllers.controller('EmployeeAddController', ['$scope', 'employeesSer
     // $scope.project = new projectsService()
 
     $scope.addEmployee = function() {
-      $scope.employee.id = dateCalcService.createTimestamp(new Date());
+      $scope.employee.id = $scope.employee.name.replace(/\s+/g, '').toLowerCase();
 
       employeesService.addEmployee($scope.employee);
       // $scope.projects.push($scope.project);

@@ -20,7 +20,7 @@
     <tbody ng-repeat="employee in employees">
       <tr>
         <td class="info">
-          <span>{{employee.name}}</span>
+          <a ng-href="#/employee/{{employee.id}}">{{employee.name}}</a>
         </td>
         <th ng-repeat="day in calendar" ng-class="{success: (getTotal(employee, day) == 1), warning: (getTotal(employee, day) < 1 && getTotal(employee, day) > 0), danger: (getTotal(employee, day) < 0), info: (getTotal(employee, day) == 0)}" ng-hide="checkActualDay(day) && actual">
           <span>{{ getTotal(employee, day) }}</span>

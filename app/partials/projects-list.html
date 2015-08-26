@@ -27,7 +27,7 @@
       </tr>
       <tr ng-repeat="project in projects">
         <td>
-          <span>{{project.name}}</span>
+          <a ng-href="#/project/{{project.id}}">{{project.name}}</a>
         </td> 
         <td>{{project.lead}}</td>
         <td>{{project.location}}</td>

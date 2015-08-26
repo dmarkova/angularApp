@@ -22,6 +22,16 @@ capacityApp.config(function($stateProvider, $urlRouterProvider) {
           url: '/employees', 
           templateUrl: 'partials/employees-list.html',
           controller: 'EmployeesListController'
+        })
+        .state('project', {
+          url: '/project/:projectId', 
+          templateUrl: 'partials/project.html',
+          controller: 'ProjectController'
+        })
+        .state('employee', {
+          url: '/employee/:employeeId', 
+          templateUrl: 'partials/employee.html',
+          controller: 'EmployeeController'
         });
 
   });

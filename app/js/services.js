@@ -17,7 +17,7 @@ angular.module('capacityAppServices', [])
 .service('employeesService', ['$filter', function ($filter) {
     var data = [
 	    { 
-	        "id": 1, 
+	        "id": "dariamarkova", 
 	        "name": "Daria Markova",
 	        "vacations": [
 				{
@@ -32,7 +32,7 @@ angular.module('capacityAppServices', [])
 	        ]
 	    }, 
 	    { 
-	        "id": 2, 
+	        "id": "stepanzakharov", 
 	        "name": "Stepan Zakharov",
 	        "vacations": [
 	        	{
@@ -47,7 +47,7 @@ angular.module('capacityAppServices', [])
 	        ]
 	    }, 
 	    { 
-	        "id": 3, 
+	        "id": "natalialastukhina", 
 	        "name": "Natalia Lastukhina",
 	        "vacations": [
 	        	{
@@ -88,7 +88,7 @@ angular.module('capacityAppServices', [])
 .service('projectsService', ['$filter', function ($filter) {
     var data = [
 	    { 
-	        "id": 1, 
+	        "id": "enironoproff", 
 	        "name": "EniroNOProff", 
 	        "lead": "Sergey Rimsha", 
 	        "location": "SPB",
@@ -96,7 +96,7 @@ angular.module('capacityAppServices', [])
 	        "end":1423319186000,
 	        "status": "current",
 	        "employees": {
-	            "1": {
+	            "dariamarkova": {
 	                "capacity":  [
 	                    {
 	                    "value":0.75, 
@@ -110,7 +110,7 @@ angular.module('capacityAppServices', [])
 	                    }
 	                ]
 	            },
-	            "2": {
+	            "stepanzakharov": {
 	                "capacity": [{
 	                    "value":1, 
 	                    "start":1420127784000,
@@ -120,7 +120,7 @@ angular.module('capacityAppServices', [])
 	        }
 	    }, 
 	    { 
-	        "id": 2, 
+	        "id": "sol", 
 	        "name": "Scandinavia Online", 
 	        "lead": "Lyubov Fedorovich", 
 	        "location": "SPB",
@@ -128,7 +128,7 @@ angular.module('capacityAppServices', [])
 	        "end":1420386984000,
 	        "status": "pending",
 	        "employees": {
-	            "1": {
+	            "dariamarkova": {
 	                "capacity":  [
 	                    {
 	                    "value":0.75, 
@@ -145,7 +145,7 @@ angular.module('capacityAppServices', [])
 	        }
 	    }, 
 	    { 
-	        "id": 3, 
+	        "id": "carpathia", 
 	        "name": "CarpathiaTicketTracking", 
 	        "lead": "Dmitry Pimenov", 
 	        "location": "SPB",
@@ -153,7 +153,7 @@ angular.module('capacityAppServices', [])
 	        "end":1420559784000,
 	        "status": "current",
 	        "employees": {
-	            "2": {
+	            "stepanzakharov": {
 	                "capacity": [{
 	                    "value":0.25, 
 	                    "start":1420127784000,
@@ -164,7 +164,7 @@ angular.module('capacityAppServices', [])
 	        }
 	    }, 
 	    { 
-	        "id": 4, 
+	        "id": "mercerdb", 
 	        "name": "Mercer DB", 
 	        "lead": "Ebgenia Petrova", 
 	        "location": "NN",
@@ -172,7 +172,7 @@ angular.module('capacityAppServices', [])
 	        "end":1420559784000,
 	        "status": "current",
 	        "employees": {
-	            "3": {
+	            "natalialastukhina": {
 	                "capacity":  [
 	                    {
 	                    "value":0.75, 

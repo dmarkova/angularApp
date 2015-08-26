@@ -48,15 +48,10 @@ capacityControllers.controller('ProjectsListController', ['$scope', 'projectsSer
     //    alert($scope.employeeNumber);
     // });
     $scope.employeeNumber = $scope.employees.length;
+    $scope.calendar = dateCalcService.getWeekCalendar(2015);
 
     $scope.forms = {};
     $scope.numberMonths = 12;
-
-    $scope.date = {
-      year: 2015,
-      startDate: "1 January",
-      endDate: "31 December"
-    };
 
     $scope.year = 2015;
 
@@ -70,16 +65,13 @@ capacityControllers.controller('ProjectsListController', ['$scope', 'projectsSer
     })
 
     $scope.getMonth = dateCalcService.getMonth;
-
-    $scope.numberWeeks =  parseInt(dateCalcService.getWeek(new Date($scope.date.year + ' ' +  $scope.date.endDate)));
-
+    
     $scope.getNumber = function(num) {
         return new Array(num);   
     };
-    $scope.numberWeeksArray = $scope.getNumber($scope.numberWeeks);
 
-    $scope.getMonthLength = function(month, year, actual) {
-      return dateCalcService.weeksInMonth(month, year, actual);
+    $scope.getMonthLength = function(month, calendar, actual) {
+      return dateCalcService.weeksInMonth(month, calendar, actual);
     };
     $scope.checkActualMonth = function(month) {
       return dateCalcService.checkActualMonth(month);

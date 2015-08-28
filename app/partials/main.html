@@ -15,54 +15,54 @@
 	    <accordion close-others="oneAtATime">
 	      <accordion-group heading="Add project">
 	          <form name="forms.projectForm" ng-submit="addProject()" ng-controller="ProjectAddController" novalidate>
-	          <div class="form-group">
-	            <label for="project_name">Project name:</label>
-	            <input ng-model="project.name" type="text" class="form-control" id="project_name"  ng-required="true">
-	          </div>
-	          <div class="form-group">
-	            <label for="project_lead">Team Lead:</label>
-	            <input ng-model="project.lead" type="text" class="form-control" id="project_lead" ng-required="true">
-	          </div>
-	          <div class="form-group">
-	            <label for="project_location">Project location:</label>
-	            <input ng-model="project.location"  type="text" class="form-control" id="project_location" ng-required="true">
-	          </div>
-	          
-	          <div class="form-group">
-	            <label for="project_start">Start date:</label>
-	            <div class="input-group">
-	              <input id="project_start" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="project.start" is-open="datepickerSettings.openedStart" min-date="minDate" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" />
-	              <span class="input-group-btn">
-	                <button type="button" class="btn btn-default" ng-click="open($event,'openedStart')"><i class="glyphicon glyphicon-calendar"></i></button>
-	              </span>
-	            </div>
-	          </div>
-	          <div class="form-group">
-	            <label for="project_end">End date:</label>
-	            <div class="input-group">
-	              <input id="project_end" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="project.end" is-open="datepickerSettings.openedEnd" min-date="project.start" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" />
-	              <span class="input-group-btn">
-	                <button type="button" class="btn btn-default" ng-click="open($event,'openedEnd')"><i class="glyphicon glyphicon-calendar"></i></button>
-	              </span>
-	            </div>
-	          </div>
-	          <div class="form-group" ng-init="project.status='current'">
-	            <div class="radio-inline">
-	              <label>
-	                <input ng-model="project.status" type="radio" name="statusRadios" id="currentStatus" value="current" checked>
-	                Current
-	              </label>
-	            </div>
-	            <div class="radio-inline">
-	              <label>
-	                <input ng-model="project.status" type="radio" name="statusRadios" id="pendingStatus" value="pending">
-	                Pending
-	              </label>
-	            </div>
-	          </div>
+		          <div class="form-group">
+		            <label for="project_name">Project name:</label>
+		            <input ng-model="project.name" type="text" class="form-control" id="project_name"  ng-required="true">
+		          </div>
+		          <div class="form-group">
+		            <label for="project_lead">Team Lead:</label>
+		            <input ng-model="project.lead" type="text" class="form-control" id="project_lead" ng-required="true">
+		          </div>
+		          <div class="form-group">
+		            <label for="project_location">Project location:</label>
+		            <input ng-model="project.location"  type="text" class="form-control" id="project_location" ng-required="true">
+		          </div>
+		          
+		          <div class="form-group">
+		            <label for="project_start">Start date:</label>
+		            <div class="input-group">
+		              <input id="project_start" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="project.start" is-open="datepickerSettings.openedStart" min-date="minDate" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" />
+		              <span class="input-group-btn">
+		                <button type="button" class="btn btn-default" ng-click="open($event,'openedStart')"><i class="glyphicon glyphicon-calendar"></i></button>
+		              </span>
+		            </div>
+		          </div>
+		          <div class="form-group">
+		            <label for="project_end">End date:</label>
+		            <div class="input-group">
+		              <input id="project_end" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="project.end" is-open="datepickerSettings.openedEnd" min-date="project.start" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" />
+		              <span class="input-group-btn">
+		                <button type="button" class="btn btn-default" ng-click="open($event,'openedEnd')"><i class="glyphicon glyphicon-calendar"></i></button>
+		              </span>
+		            </div>
+		          </div>
+		          <div class="form-group" ng-init="project.status='current'">
+		            <div class="radio-inline">
+		              <label>
+		                <input ng-model="project.status" type="radio" name="statusRadios" id="currentStatus" value="current" checked>
+		                Current
+		              </label>
+		            </div>
+		            <div class="radio-inline">
+		              <label>
+		                <input ng-model="project.status" type="radio" name="statusRadios" id="pendingStatus" value="pending">
+		                Pending
+		              </label>
+		            </div>
+		          </div>
 
-	          <button type="submit" class="btn btn-primary" ng-disabled="forms.projectForm.$invalid">Submit</button>
-	        </form>
+		          <button type="submit" class="btn btn-primary" ng-disabled="forms.projectForm.$invalid">Submit</button>
+		        </form>
 	        </accordion-group>
 
 	        <accordion-group heading="Add project capacity">

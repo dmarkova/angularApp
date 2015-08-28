@@ -51,8 +51,12 @@ angular.module('capacityAppServices', [])
 	        "name": "Natalia Lastukhina",
 	        "vacations": [
 	        	{
-					"start":1420059600000,
-	                "end":1423319186000
+					"start":new Date(1984, 4, 15),
+	                "end":new Date(1984, 4, 15)
+	            },
+	            {
+					"start":new Date(1984, 4, 15),
+	                "end":new Date(1984, 4, 15)
 	            }
 	        ],
 	        "dayoffs": [
@@ -112,6 +116,13 @@ angular.module('capacityAppServices', [])
 	            },
 	            "stepanzakharov": {
 	                "capacity": [{
+	                    "value":1, 
+	                    "start":1420127784000,
+	                    "end":1423319186000
+	                }]
+	            },
+	            "natalialastukhina": {
+	            	"capacity": [{
 	                    "value":1, 
 	                    "start":1420127784000,
 	                    "end":1423319186000
@@ -280,10 +291,10 @@ angular.module('capacityAppServices', [])
 		if (calendar) {
 			weekCounter = function() {
 				return _.filter(calendar, function(week){ 
-		        	return week.month[month]; 
+		        	return week.month==monthName; 
 		      	});
 			};
-			weekCounter = weekCounter.length;
+			weekCounter = weekCounter().length;
 
 			if (actual && month == todayMonth) {
 	    		return weekCounter - todayWeek + 1;
@@ -331,7 +342,6 @@ angular.module('capacityAppServices', [])
 				nextDate.setDate(nextDate.getDate()+1);
 			}
 		});
-
 		return calendar;
 		
 	};
@@ -358,6 +368,7 @@ angular.module('capacityAppServices', [])
 			}
 		});
 		return calendar;
+		
 		
 	};
 

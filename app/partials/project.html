@@ -3,9 +3,24 @@
 <p>{{project.lead}}</p>
 <p>{{project.location}}</p>
 
-<h2>Assigned on the project</h2>
-<!-- <ul class="phone-thumbs">
-  <li ng-repeat="img in phone.images">
-    <img ng-src="{{img}}" ng-click="setImage(img)">
-  </li>
-</ul> -->
+<h2>Assigned on the project:</h2>
+<accordion close-others="oneAtATime">
+    <accordion-group heading="{{employee.name}}" is-open ng-repeat="employee in activeEmployees">
+      	<form name="{{'forms.project-' + employee.id + '-form'}}" ng-submit="editProject()" ng-controller="ProjectEditController" novalidate >
+			<div class="row" ng-repeat="capacity in employeeCapacity(project, employee)">
+				<div class="form-group col-md-4">
+					<label for="{{'capacity-'+$index}}">Capacity:</label>
+					<div contenteditable>{{capacity.value}}</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="{{'startdate-'+$index}}">Start:</label>
+					<div contenteditable>{{capacity.start | date:'dd MMMM yyyy'}}</div>
+				</div>
+				<div class="form-group col-md-4">
+					<label for="{{'enddate-'+$index}}">End:</label>
+					<div contenteditable>{{capacity.end | date:'dd MMMM yy'}}</div>
+				</div>
+			</div>
+      	</form>
+    </accordion-group>
+</ul>

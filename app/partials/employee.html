@@ -1,10 +1,76 @@
 <h1>{{employee.name}}</h1>
 
-<!-- <p>{{employee.lead}}</p>
-<p>{{project.location}}</p> -->
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Vacations</h3>
+			</div>
+			<div class="panel-body" ng-controller="EmployeeEditController">
+				<div class="row" ng-repeat="vacation in employee.vacations">
+					<div class="form-group col-md-3">
+						<label for="{{'startdate-'+$index}}">Start:</label>
+						<div editable-bsdate="vacation.start" e-datepicker-popup="dd-MMMM-yyyy" e-form="rowform" e-name="start" e-init-date="false">{{vacation.start | date:'dd MMMM yyyy' || 'empty'}}</div>
+					</div>
+					<div class="form-group col-md-3">
+						<label for="{{'enddate-'+$index}}">End:</label>
+						<div editable-bsdate="vacation.end" e-datepicker-popup="dd-MMMM-yyyy" e-form="rowform" e-name="end" e-init-date="false">{{vacation.end | date:'dd MMMM yyyy' || 'empty'}}</div>
+					</div>
+					<div class="col-md-3 col-md-offset-3 text-right">
+						<form editable-form name="rowform" onbeforesave="saveVacations()" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == vacation">
+				          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+				            save
+				          </button>
+				          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+				            cancel
+				          </button>
+				        </form>
+				        <div class="buttons" ng-show="!rowform.$visible">
+				          <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+				          <button class="btn btn-danger" ng-click="removeUser($index)">del</button>
+				        </div>  
+					</div>
+				</div>
+		  	</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">Day off</h3>
+		  </div>
+		  <div class="panel-body">
+		    <form name="{{'forms.employee-' + project.id + '-form'}}" ng-submit="editEmployee()" ng-controller="EmployeeEditController" novalidate >
+			<div class="row" ng-repeat="dayoff in employee.dayoffs">
+				<div class="form-group col-md-3">
+					<label for="{{'date-'+$index}}">Date:</label>
+					<div contenteditable>{{dayoff.date | date:'dd MMMM yyyy'}}</div>
+				</div>
+			</div>
+      	</form>
+		  </div>
+		</div>
+	</div>
+</div>
 
-<!-- <ul class="phone-thumbs">
-  <li ng-repeat="img in phone.images">
-    <img ng-src="{{img}}" ng-click="setImage(img)">
-  </li>
-</ul> -->
+<h3>Assigned to the projects:</h3>
+<accordion close-others="oneAtATime">
+    <accordion-group heading="{{project.name}}" is-open ng-repeat="project in activeProjects">
+      	<form name="{{'forms.employee-' + project.id + '-form'}}" ng-submit="editEmployee()" ng-controller="EmployeeEditController" novalidate >
+			<div class="row" ng-repeat="capacity in projectCapacity(project, employee)">
+				<div class="form-group col-md-3">
+					<label for="{{'capacity-'+$index}}">Capacity:</label>
+					<div contenteditable>{{capacity.value}}</div>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="{{'startdate-'+$index}}">Start:</label>
+					<div contenteditable>{{capacity.start | date:'dd MMMM yyyy'}}</div>
+				</div>
+				<div class="form-group col-md-3">
+					<label for="{{'enddate-'+$index}}">End:</label>
+					<div contenteditable>{{capacity.end | date:'dd MMMM yy'}}</div>
+				</div>
+			</div>
+      	</form>
+    </accordion-group>
+</ul>

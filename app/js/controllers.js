@@ -4,6 +4,9 @@
 
 var capacityControllers = angular.module('capacityControllers', ['ui.bootstrap']);
 
+capacityControllers.run(function(editableOptions) {
+  editableOptions.theme = 'bs3';
+});
 
 capacityControllers.controller('TabsController', ['$rootScope','$scope', '$state', 
   function($rootScope,$scope,$state) {
@@ -39,6 +42,7 @@ capacityControllers.controller('TabsController', ['$rootScope','$scope', '$state
 
 capacityControllers.controller('ProjectsListController', ['$scope', 'projectsService','employeesService', '$filter', 'dateCalcService',
   function($scope, projectsService, employeesService, $filter, dateCalcService) {
+    $scope.calendar = dateCalcService.getWeekCalendar(2015);
 
     $scope.projects = projectsService.projects();
     $scope.employees = employeesService.employees();
@@ -48,7 +52,6 @@ capacityControllers.controller('ProjectsListController', ['$scope', 'projectsSer
     //    alert($scope.employeeNumber);
     // });
     $scope.employeeNumber = $scope.employees.length;
-    $scope.calendar = dateCalcService.getWeekCalendar(2015);
 
     $scope.forms = {};
     $scope.numberMonths = 12;
@@ -112,14 +115,47 @@ capacityControllers.controller('ProjectsListController', ['$scope', 'projectsSer
 capacityControllers.controller('ProjectController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
   function($scope, $stateParams, projectsService, employeesService, $filter) {
     $scope.projects = projectsService.projects();
+    $scope.employees = employeesService.employees();
     $scope.project = $filter('getById')($scope.projects, $stateParams.projectId);
+    $scope.activeEmployees = [];
+
+    angular.forEach($scope.project.employees,function(value, key) {
+      var employee = _.find($scope.employees, function(employee){ 
+        return employee.id == key; 
+      });
+      $scope.activeEmployees.push(employee);
+    });
 }]);
 
 capacityControllers.controller('EmployeeController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
   function($scope, $stateParams, projectsService, employeesService, $filter) {
     $scope.employees = employeesService.employees();
     $scope.employee = $filter('getById')($scope.employees, $stateParams.employeeId);
+    $scope.projects = projectsService.projects();
+
+
+    $scope.activeProjects = _.filter($scope.projects, function(project){ 
+      return project.employees[$scope.employee.id]; 
+    });
 }]);
+
+capacityControllers.controller('ProjectEditController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
+  function($scope, $stateParams, projectsService, employeesService, $filter) {
+    $scope.employeeCapacity = function(project, employee) {
+      var capacity = project.employees[employee.id].capacity;
+      return capacity;
+    };
+}]);
+
+capacityControllers.controller('EmployeeEditController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
+  function($scope, $stateParams, projectsService, employeesService, $filter) {
+    $scope.projectCapacity = function(project, employee) {
+      var capacity = project.employees[employee.id].capacity;
+      return capacity;
+    };
+}]);
+
+
 
 capacityControllers.controller('EmployeesListController', ['$scope', 'projectsService', 'employeesService', 'dateCalcService', '_', '$filter',
   function($scope, projectsService, employeesService, dateCalcService, _, $filter) {

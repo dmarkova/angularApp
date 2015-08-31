@@ -4,10 +4,6 @@
 
 var capacityControllers = angular.module('capacityControllers', ['ui.bootstrap']);
 
-capacityControllers.run(function(editableOptions) {
-  editableOptions.theme = 'bs3';
-});
-
 capacityControllers.controller('TabsController', ['$rootScope','$scope', '$state', 
   function($rootScope,$scope,$state) {
     $scope.tabs = [
@@ -76,8 +72,8 @@ capacityControllers.controller('ProjectsListController', ['$scope', 'projectsSer
     $scope.getMonthLength = function(month, calendar, actual) {
       return dateCalcService.weeksInMonth(month, calendar, actual);
     };
-    $scope.checkActualMonth = function(month) {
-      return dateCalcService.checkActualMonth(month);
+    $scope.checkActualMonth = function(month,year) {
+      return dateCalcService.checkActualMonthWeek(month,year);
     };
     $scope.checkActualWeek = function(week) {
       return dateCalcService.checkActualWeek(week);
@@ -127,8 +123,8 @@ capacityControllers.controller('ProjectController', ['$scope', '$stateParams', '
     });
 }]);
 
-capacityControllers.controller('EmployeeController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
-  function($scope, $stateParams, projectsService, employeesService, $filter) {
+capacityControllers.controller('EmployeeController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter','datepickerService',
+  function($scope, $stateParams, projectsService, employeesService, $filter, datepickerService) {
     $scope.employees = employeesService.employees();
     $scope.employee = $filter('getById')($scope.employees, $stateParams.employeeId);
     $scope.projects = projectsService.projects();
@@ -137,6 +133,9 @@ capacityControllers.controller('EmployeeController', ['$scope', '$stateParams', 
     $scope.activeProjects = _.filter($scope.projects, function(project){ 
       return project.employees[$scope.employee.id]; 
     });
+
+
+
 }]);
 
 capacityControllers.controller('ProjectEditController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
@@ -147,12 +146,27 @@ capacityControllers.controller('ProjectEditController', ['$scope', '$stateParams
     };
 }]);
 
-capacityControllers.controller('EmployeeEditController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
-  function($scope, $stateParams, projectsService, employeesService, $filter) {
+capacityControllers.controller('EmployeeEditController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter', '$timeout','datepickerService',
+  function($scope, $stateParams, projectsService, employeesService, $filter, $timeout,datepickerService) {
     $scope.projectCapacity = function(project, employee) {
       var capacity = project.employees[employee.id].capacity;
       return capacity;
     };
+
+    $scope.datepickerSettings = datepickerService;
+    
+    //for datepicker entries inside ng-repeat
+    $scope.openStart = function($event, dt) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      dt.openedStart = true;
+    };
+    $scope.openEnd = function($event, dt) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      dt.openedEnd = true;
+    };
+
 }]);
 
 
@@ -472,6 +486,13 @@ capacityControllers.controller('PrivateCapacityAddController', ['$scope',  '$htt
       });
     };
 
+   $scope.showVacations = function() {
+      $scope.vacationInit = !$scope.vacationInit;
+    };
+    $scope.showDayoff = function() {
+      $scope.dayOffInit = !$scope.dayOffInit;
+    };
+
     $scope.removeCapacity = function(index) {
       $scope.capEmployee.capacity.splice(index, 1);
     };
@@ -479,27 +500,33 @@ capacityControllers.controller('PrivateCapacityAddController', ['$scope',  '$htt
     $scope.savePrivateCapacity = function() {
       var employeeSelected = $filter('getById')($scope.employees, $scope.capEmployee.employee);
 
-      angular.forEach($scope.capEmployee.vacations, function(item) {
+      if ($scope.vacationInit) {
+        angular.forEach($scope.capEmployee.vacations, function(item) {
 
-        item.start = Math.floor(item.start.getTime());
-        item.end = Math.floor(item.end.getTime());
+          item.start = Math.floor(item.start.getTime());
+          item.end = Math.floor(item.end.getTime());
 
-        employeesService.addPrivateCapacity(employeeSelected, "vacations", item);
+          employeesService.addPrivateCapacity(employeeSelected, "vacations", item);
 
-        // projectSelected.employees[employeeID].capacity.push(item);
-      });
+          // projectSelected.employees[employeeID].capacity.push(item);
+        });
+        $scope.vacationInit = false;
+      }
 
-      angular.forEach($scope.capEmployee.dayoffs, function(item) {
+      if ($scope.dayOffInit) {
+        angular.forEach($scope.capEmployee.dayoffs, function(item) {
 
-        item.date = Math.floor(item.date.getTime());
-        employeesService.addPrivateCapacity(employeeSelected, "dayoffs", item);
+          item.date = Math.floor(item.date.getTime());
+          employeesService.addPrivateCapacity(employeeSelected, "dayoffs", item);
 
-        // projectSelected.employees[employeeID].capacity.push(item);
-      });
+          // projectSelected.employees[employeeID].capacity.push(item);
+        });
+        $scope.dayOffInit = false;
+      }
 
-      $scope.capProject = {};
-      initialLoadVacation();
+      $scope.capEmployee = {};
       initialLoadDayoff();
+      initialLoadVacation();
 
       // Set back to pristine.
       $scope.forms.privateCapacityForm.$setPristine();

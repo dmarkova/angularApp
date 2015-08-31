@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var capacityApp = angular.module('capacityApp', ["ui.router", "ui.bootstrap","capacityControllers", "capacityAppServices", "ngResource", "capacityAppFilters","capacityAppDirectives", "underscore", "xeditable"]);
+var capacityApp = angular.module('capacityApp', ["ui.router", "ui.bootstrap","capacityControllers", "capacityAppServices", "ngResource", "capacityAppFilters","capacityAppDirectives", "underscore"]);
 
 capacityApp.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise("/main/projects");
@@ -23,12 +23,12 @@ capacityApp.config(function($stateProvider, $urlRouterProvider) {
           templateUrl: 'partials/employees-list.html',
           controller: 'EmployeesListController'
         })
-        .state('project', {
+        .state('main.project', {
           url: '/project/:projectId', 
           templateUrl: 'partials/project.html',
           controller: 'ProjectController'
         })
-        .state('employee', {
+        .state('main.employee', {
           url: '/employee/:employeeId', 
           templateUrl: 'partials/employee.html',
           controller: 'EmployeeController'

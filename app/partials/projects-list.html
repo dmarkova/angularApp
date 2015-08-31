@@ -7,14 +7,14 @@
     <thead>
       <tr>
         <td colspan = '3'></td> 
-        <th ng-repeat="i in getNumber(numberMonths) track by $index" colspan="{{getMonthLength($index + 1, calendar,actual)}}" ng-hide="checkActualMonth($index + 1) && actual">{{ $index + 1 | monthName}}</th>
+        <th ng-repeat="i in getNumber(numberMonths) track by $index" colspan="{{getMonthLength($index + 1, calendar,actual)}}" ng-hide="checkActualMonth($index + 1,year) && actual">{{ $index + 1 | monthName}}</th>
       </tr>
       <tr>
         <th>Project name</th>
         <th>Team Lead</th>
         <th>Location</th>
         <th ng-repeat="week in calendar" ng-hide="checkActualWeek(week.number) && actual">
-          <span>{{week.number}} week, {{week.month}}</span>
+          <span>{{week.number}}</span>
         </th>
       </tr>
     </thead>
@@ -27,7 +27,7 @@
       </tr>
       <tr ng-repeat="project in projects">
         <td>
-          <a ng-href="#/project/{{project.id}}">{{project.name}}</a>
+          <a ng-href="#/main/project/{{project.id}}">{{project.name}}</a>
         </td> 
         <td>{{project.lead}}</td>
         <td>{{project.location}}</td>

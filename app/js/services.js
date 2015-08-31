@@ -263,7 +263,7 @@ angular.module('capacityAppServices', [])
 		  month = '';
 
 		date = dateCalcService.createTimestamp(date);
-		month = $filter('date')(date, "MMMM");
+		month = $filter('date')(date, "M");
 
 		return month;
     };
@@ -306,6 +306,7 @@ angular.module('capacityAppServices', [])
 
     dateCalcService.checkActualDay = function (day) {
     	var today = new Date();
+    	today = today.setHours(0,0,0,0);
     	return day.date < today;
     };
     dateCalcService.checkActualMonth = function (month) {
@@ -313,6 +314,13 @@ angular.module('capacityAppServices', [])
     		todayMonth = $filter('date')(today, "M");
     	return month < todayMonth;
     };
+    dateCalcService.checkActualMonthWeek = function (month,year) {
+    	var today = new Date(),
+    		todayWeek = dateCalcService.getWeek(today),
+    		todayMonth = dateCalcService.getMonth(todayWeek,year);
+    	return month < todayMonth;
+    };
+
     dateCalcService.checkActualWeek = function (week) {
     	var today = new Date(),
     		todayWeek = dateCalcService.getWeek(today);

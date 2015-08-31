@@ -25,3 +25,7 @@ body {
 .table-responsive {
     overflow-x: scroll;
 }
+
+.editable-wrap {
+    display: block;
+} 

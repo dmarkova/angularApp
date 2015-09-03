@@ -1,26 +1,50 @@
 <h1>{{project.name}}</h1>
 
-<p>{{project.lead}}</p>
-<p>{{project.location}}</p>
+<dl>
+	<dt>Team lead:</dt>
+	<dd>{{project.lead}}</dd>
+</dl>
+<dl>
+	<dt>Location:</dt>
+	<dd>{{project.location}}</dd>
+</dl>
 
-<h2>Assigned on the project:</h2>
-<accordion close-others="oneAtATime">
-    <accordion-group heading="{{employee.name}}" is-open ng-repeat="employee in activeEmployees">
-      	<form name="{{'forms.project-' + employee.id + '-form'}}" ng-submit="editProject()" ng-controller="ProjectEditController" novalidate >
-			<div class="row" ng-repeat="capacity in employeeCapacity(project, employee)">
-				<div class="form-group col-md-4">
-					<label for="{{'capacity-'+$index}}">Capacity:</label>
-					<div contenteditable>{{capacity.value}}</div>
-				</div>
-				<div class="form-group col-md-4">
-					<label for="{{'startdate-'+$index}}">Start:</label>
-					<div contenteditable>{{capacity.start | date:'dd MMMM yyyy'}}</div>
-				</div>
-				<div class="form-group col-md-4">
-					<label for="{{'enddate-'+$index}}">End:</label>
-					<div contenteditable>{{capacity.end | date:'dd MMMM yy'}}</div>
-				</div>
+<div class="btn-group">
+  <button type="button" class="btn btn-success btn-sm" ng-click="showAll()">
+  	{{ expandBtnText }}
+  </button>
+</div>
+<div class="row">
+    <div class="col-md-3" is-open ng-repeat="employee in setActiveEmployees()">
+    	<div class="panel panel-primary">	
+	    	<div class="panel-heading">
+			    <h4 class="panel-title">
+			      {{employee.name}}
+			    </h4>
 			</div>
-      	</form>
-    </accordion-group>
-</ul>
+			<table class="table" ng-controller="ProjectEditController" >
+	  			<thead>
+	  				<tr>
+	  					<th class="col-sm">Capacity</th>
+	  					<th>Start</th>
+	  					<th>End</th>
+	  					<th class="col-sm"></th>
+	  				</tr>
+	  			</thead>
+	  			<tbody>
+	  				<tr editablerow="capacity" editablearray="employeeCapacity(project, employee)" ng-repeat="capacity in employeeCapacity(project, employee)" ng-hide="checkActualDay(capacity.end) && actual" ng-class="{warning: checkActualDay(capacity.end)}">
+						<td>
+							<span editable="capacity.value"></span>
+						</td>
+						<td>
+							<span editabledate="capacity.start" is-open="capacity.openedStart" open="openStart(event, capacity)"></span>
+						</td>
+						<td>
+							<span editabledate="capacity.end" is-open="capacity.openedEnd" open="openEnd(event, capacity)"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+    </div>
+</div>

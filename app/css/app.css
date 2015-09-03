@@ -10,22 +10,127 @@ body {
   width: 100%;
 }
 
+dl {
+    margin-bottom: 10px;
+}
+dt,
+dd {
+	display: inline-block;
+}
+
+h1, 
+.h1 {
+    font-size: 25px;
+}
+h2, 
+.h2 {
+    font-size: 20px;
+}
+.table {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+.table > thead > tr > th, 
+.table > tbody > tr > th, 
+.table > tfoot > tr > th, 
+.table > thead > tr > td,
+.table > tbody > tr > td, 
+.table > tfoot > tr > td {
+    padding: 5px;
+    min-width: 26px;
+}
+.table-body > thead > tr > th, 
+.table-body > thead > tr > td,
+.table-body > tbody > tr > td, 
+.table-body > tfoot > tr > td {
+	text-align: center;
+}
+.table-compound {
+	padding-left: 290px;
+	overflow: hidden;
+}
+	.table-compound .table-head {
+		margin-left: -290px;
+		float: left;
+		width: 290px;
+	}
+	.table-compound .table-body-wrap {
+		float: left;
+	    width: 100%;
+	    overflow-x: auto;
+	}
+.table-compound.table-sm {
+	padding-left: 155px;
+	overflow: hidden;
+}
+	.table-compound.table-sm .table-head {
+		margin-left: -155px;
+		width: 155px;
+	}
+
+.table-head > thead > tr > th, 
+.table-head > tbody > tr > th {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 133px;
+}
+.col-sm {
+	width: 65px;
+}
+.table-responsive {
+	margin-bottom:20px; 
+}
 .nav-tabs {
   margin: 0 0 30px;
 }
+.btn-group {
+	display: block;
+	margin-bottom: 20px;
+	overflow: hidden;
+}
+.btn-expand {
+	float:right;
+	margin-right: 5px;
+	color:#333;
+}
 
+.panel-heading {
+    padding: 7px 5px;
+}
+.panel-title {
+    font-size: 14px;
+}
 .panel-body + .panel-body {
 	border-top: 1px solid #ddd;
 }
-
-
 .panel-group .panel {
    overflow: visible;
 }
-.table-responsive {
-    overflow-x: scroll;
+.panel-group .panel-default > .panel-heading + .panel-collapse .panel-body {
+	padding:0;
 }
-
+.panel .table {
+	table-layout: fixed;
+}
 .editable-wrap {
     display: block;
 } 
+
+.editable-btn-group .glyphicon {
+	padding: 3px;
+    font-size: 14px;
+}
+.editable-btn-group .glyphicon:hover {
+	text-decoration: none;
+}
+.view-value {
+	padding: 4px 0;
+}
+
+@media (min-width: 1200px) {
+	.container {
+	    width: auto;
+	    padding: 0 50px;
+	}
+}

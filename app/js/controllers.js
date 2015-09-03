@@ -108,46 +108,97 @@ capacityControllers.controller('ProjectsListController', ['$scope', 'projectsSer
     };
   }]);
 
-capacityControllers.controller('ProjectController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
-  function($scope, $stateParams, projectsService, employeesService, $filter) {
+capacityControllers.controller('ProjectController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter', 'datepickerService', 'dateCalcService',
+  function($scope, $stateParams, projectsService, employeesService, $filter, datepickerService, dateCalcService) {
     $scope.projects = projectsService.projects();
     $scope.employees = employeesService.employees();
     $scope.project = $filter('getById')($scope.projects, $stateParams.projectId);
-    $scope.activeEmployees = [];
 
-    angular.forEach($scope.project.employees,function(value, key) {
-      var employee = _.find($scope.employees, function(employee){ 
-        return employee.id == key; 
+    $scope.$watch(
+      function(scope) { return scope.project },
+      function() {$scope.setActiveEmployees();}
+     );
+    
+    $scope.setActiveEmployees = function(){
+      var activeEmployees=[];
+      angular.forEach($scope.project.employees,function(value, key) {
+        var employee = _.find($scope.employees, function(employee){ 
+          return employee.id == key; 
+        });
+        activeEmployees.push(employee);
       });
-      $scope.activeEmployees.push(employee);
-    });
+      return activeEmployees;
+    };
+
+    $scope.checkActualDay = function(day) {
+      return dateCalcService.checkActualDay(day);
+    };
+
+    $scope.actual = true;
+    $scope.showAll = function() {
+        $scope.actual = !$scope.actual;
+    };
+    $scope.$watch('actual', function(){
+      $scope.expandBtnText = $scope.actual ? 'Show full year!' : 'Hide full year';
+    })
 }]);
 
-capacityControllers.controller('EmployeeController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter','datepickerService',
-  function($scope, $stateParams, projectsService, employeesService, $filter, datepickerService) {
+capacityControllers.controller('EmployeeController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter','datepickerService', 'dateCalcService',
+  function($scope, $stateParams, projectsService, employeesService, $filter, datepickerService, dateCalcService) {
     $scope.employees = employeesService.employees();
     $scope.employee = $filter('getById')($scope.employees, $stateParams.employeeId);
     $scope.projects = projectsService.projects();
 
+    $scope.$watch(
+      function(scope) { return scope.projects },
+      function() {$scope.setActiveProjects();}
+     );
+    
+    $scope.setActiveProjects = function(){
+      var activeProjects=[];
+      activeProjects = _.filter($scope.projects, function(project){ 
+        return project.employees[$scope.employee.id]; 
+      });
+      return activeProjects;
+    };
 
-    $scope.activeProjects = _.filter($scope.projects, function(project){ 
-      return project.employees[$scope.employee.id]; 
-    });
+    $scope.checkActualDay = function(day) {
+      return dateCalcService.checkActualDay(day);
+    };
 
-
+    $scope.actual = true;
+    $scope.showAll = function() {
+        $scope.actual = !$scope.actual;
+    };
+    $scope.$watch('actual', function(){
+      $scope.expandBtnText = $scope.actual ? 'Show full year!' : 'Hide full year';
+    })
 
 }]);
 
-capacityControllers.controller('ProjectEditController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter',
-  function($scope, $stateParams, projectsService, employeesService, $filter) {
+capacityControllers.controller('ProjectEditController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter','datepickerService',
+  function($scope, $stateParams, projectsService, employeesService, $filter,datepickerService) {
     $scope.employeeCapacity = function(project, employee) {
       var capacity = project.employees[employee.id].capacity;
       return capacity;
     };
+    $scope.datepickerSettings = datepickerService;
+    
+    //for datepicker entries inside ng-repeat
+    $scope.openStart = function($event, dt) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      dt.openedStart = true;
+    };
+    $scope.openEnd = function($event, dt) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      dt.openedEnd = true;
+    };
 }]);
 
-capacityControllers.controller('EmployeeEditController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter', '$timeout','datepickerService',
-  function($scope, $stateParams, projectsService, employeesService, $filter, $timeout,datepickerService) {
+capacityControllers.controller('EmployeeEditController', ['$scope', '$stateParams', 'projectsService', 'employeesService', '$filter','datepickerService',
+  function($scope, $stateParams, projectsService, employeesService, $filter,datepickerService) {
     $scope.projectCapacity = function(project, employee) {
       var capacity = project.employees[employee.id].capacity;
       return capacity;
@@ -239,7 +290,7 @@ capacityControllers.controller('EmployeesListController', ['$scope', 'projectsSe
 
       angular.forEach(project.employees[employee.id].capacity,function(item) {
        if ($scope.checkDayRange(item, day.date)) {
-          total += item.value;
+          total += parseFloat(item.value,10);
         };
       });
       return total;
@@ -260,6 +311,10 @@ capacityControllers.controller('EmployeesListController', ['$scope', 'projectsSe
       
       return total;
     };
+
+    $scope.toggleInfo = function(employee){
+      employee.collapsedInfo = !employee.collapsedInfo;
+    }
 
   }]);
 

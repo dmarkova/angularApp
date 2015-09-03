@@ -1,40 +1,65 @@
 'use strict';
 
 /* Directives */
+var templateDir = './partials/';
 angular.module('capacityAppDirectives', [])
 
-.directive('editablerow', function() {
+.directive('editablerow', ['$modal',function($modal) {
+
+  var ModalInstanceCtrl = function($scope, $modalInstance) {
+    $scope.ok = function() {
+      $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+  };
+
   return {
     restrict: 'A',
     transclude: true,
     scope: {
-      value: "=editablerow"
-    },
+      value: "=editablerow",
+      array: "=editablearray"
+    },   
     controller: function ($scope) {
-        var oldValue = $scope.value;
-        var changeEditStat = function (stat) {
+       var changeEditStat = function (stat) {
             $scope.edit = stat;
-            if (!stat && $scope.value !== oldValue) {
-                console.log("Send request if you want to update on server.");
-            }
         };
         $scope.editRow = function(){
             changeEditStat(true);
-            // inputElement.focus();
+            $scope.oldValue = angular.copy($scope.value);
         };
         $scope.cancelRow = function(){
             changeEditStat(false);
+            $scope.value = $scope.oldValue;
+        };
+        $scope.saveRow = function(){
+            changeEditStat(false);
+        };
+        $scope.deleteRow = function(){
+            var modalInstance = $modal.open({
+              animation: true,
+              templateUrl: './partials/confirmModal.html',
+              controller: ModalInstanceCtrl,
+              size: 'sm'
+            });
+            modalInstance.result.then(function() {
+              $scope.array.splice($scope.value, 1);
+            }, function() {
+              //Modal dismissed
+            });
         };
     },
     templateUrl: "./partials/editableRowTemplate.html",
   };
-})
+}])
 
 .directive("editable", function () {
   return {
       scope: {
-          value: "=editable",
-          edit: "="
+          value: "=editable"
       },
       restrict: "A",
       templateUrl: "./partials/editableTemplate.html"
@@ -45,27 +70,61 @@ angular.module('capacityAppDirectives', [])
   return {
       scope: {
           value: "=editabledate",
-          edit: "=",
           isOpen: "=",
-          open: "&",
-          item: "="
+          open: "&"
       },
       require: '^editablerow',
       restrict: "A",
       templateUrl: "./partials/editableDateTemplate.html",
-      controller: function($scope) {    
-    
-        // //for datepicker entries inside ng-repeat
-        // $scope.openStart = function($event, dt) {
-        //   $event.preventDefault();
-        //   $event.stopPropagation();
-        //   dt.openedStart = true;
-        // };
-        // $scope.openEnd = function($event, dt) {
-        //   $event.preventDefault();
-        //   $event.stopPropagation();
-        //   dt.openedEnd = true;
-        // };
+      link: function ($scope) {
       }
   };
 })
+
+
+.directive("myModal", function($modal){
+  return {
+      // transclude: true,
+      restrict: "EA",
+      replace:true,
+      template: "<a ng-click='open()' href>{{title}}</a>",
+      scope: {
+          useCtrl: "@",
+          email: "@",
+          title: "@"
+      },
+      link: function(scope, element, attrs) {
+          scope.open = function(){
+   
+              var modalInstance = $modal.open({
+                  templateUrl: templateDir + attrs.instanceTemplate + ".html",
+                  controller:  scope.useCtrl
+              });
+          };
+      }
+  };
+})
+
+.directive('ngTranscludeReplace', ['$log', function ($log) {
+    return {
+        terminal: true,
+        restrict: 'EA',
+
+        link: function ($scope, $element, $attr, ctrl, transclude) {
+            if (!transclude) {
+                $log.error('orphan',
+                           'Illegal use of ngTranscludeReplace directive in the template! ' +
+                           'No parent directive that requires a transclusion found. ');
+                return;
+            }
+            transclude(function (clone) {
+                if (clone.length) {
+                    $element.replaceWith(clone);
+                }
+                else {
+                    $element.remove();
+                }
+            });
+        }
+    };
+}]);

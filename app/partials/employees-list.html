@@ -2,46 +2,67 @@
   <button type="button" class="btn btn-success btn-sm" ng-click="expandTable()">{{ expandBtnText }}</button>
 </div>
 
-<div class="table-responsive">
-  <table class="table table-bordered">
+<div class="table-responsive table-compound table-sm" ng-if="calendar.$resolved">
+  <table class="table table-bordered table-head">
     <thead>
       <tr>
-        <th></th>
-        <!-- ToDo: fix month separation -->
-        <th ng-repeat="i in getNumber(numberMonths) track by $index" colspan="{{getMonthLength($index + 1, year, actual)}}"  ng-hide="checkActualMonth($index + 1) && actual">{{ $index + 1 | monthName}}</th>
+        <th>Calendar</th>
       </tr>
       <tr>
         <th>Name</th>
-        <th ng-repeat="day in calendar" ng-hide="checkActualDay(day) && actual">
+      </tr>
+    </thead>
+    <tbody ng-repeat="employee in employees" ng-init="employee.collapsedInfo = 'false'">
+      <tr>
+        <th class="info">
+          <a ng-href="#/main/employee/{{employee.id}}">{{employee.name}}</a>
+          <a class="btn-expand" href ng-click="toggleInfo(employee)">
+            <span class="glyphicon glyphicon-chevron-down" ng-show="employee.collapsedInfo"></span>
+            <span class="glyphicon glyphicon-chevron-up" ng-hide="employee.collapsedInfo"></span>
+          </a>
+        </th>
+      </tr>
+      <tr ng-repeat="project in employeeProjects(employee)" ng-hide="employee.collapsedInfo">
+        <th>
+          <span>{{project.name}}</span>
+        </th>
+      </tr>
+      <tr class="warning" ng-hide="employee.collapsedInfo">
+        <th>
+          <span>Vacation & day off</span>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-body-wrap">
+    <table class="table table-bordered table-body">
+    <thead>
+      <tr>
+        <th ng-repeat="i in getNumber(numberMonths) track by $index" colspan="{{getMonthLength($index + 1, year, actual)}}"  ng-hide="checkActualMonth($index + 1) && actual">{{ $index + 1 | monthName}}</th>
+      </tr>
+      <tr>
+        <th ng-repeat="day in calendar" ng-hide="checkActualDay(day.date) && actual">
           <span>{{day.date | date:'d' }}</span>
         </th>
       </tr>
     </thead>
     <tbody ng-repeat="employee in employees">
       <tr>
-        <td class="info">
-          <a ng-href="#/main/employee/{{employee.id}}">{{employee.name}}</a>
+        <td ng-repeat="day in calendar" ng-class="{success: (getTotal(employee, day) == 1), warning: (getTotal(employee, day) < 1 && getTotal(employee, day) > 0), danger: (getTotal(employee, day) < 0), info: (getTotal(employee, day) == 0)}" ng-hide="checkActualDay(day.date) && actual">
+          <strong>{{ getTotal(employee, day) }}</strong>
         </td>
-        <th ng-repeat="day in calendar" ng-class="{success: (getTotal(employee, day) == 1), warning: (getTotal(employee, day) < 1 && getTotal(employee, day) > 0), danger: (getTotal(employee, day) < 0), info: (getTotal(employee, day) == 0)}" ng-hide="checkActualDay(day) && actual">
-          <span>{{ getTotal(employee, day) }}</span>
-        </th>
       </tr>
-      <tr ng-repeat="project in employeeProjects(employee)">
-        <td>
-          <span>{{project.name}}</span>
-        </td>
-        <td ng-repeat="day in calendar" ng-hide="checkActualDay(day) && actual">
+      <tr ng-repeat="project in employeeProjects(employee)" ng-hide="employee.collapsedInfo">
+        <td ng-repeat="day in calendar" ng-hide="checkActualDay(day.date) && actual">
           <span>{{ getDayCapacity(project,employee,day) }}</span>
         </td>
       </tr>
-      <tr class="warning">
-        <td>
-          <span>Vacation & day off & sick</span>
-        </td>
-        <td ng-repeat="day in calendar" ng-hide="checkActualDay(day) && actual">
+      <tr class="warning" ng-hide="employee.collapsedInfo">
+        <td ng-repeat="day in calendar" ng-hide="checkActualDay(day.date) && actual">
           <span>{{ getDayOff(employee,day) }}</span>
         </td>
       </tr>
     </tbody>
-  </table>
+    </table>
+  </div>
 </div>

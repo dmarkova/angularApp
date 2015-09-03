@@ -1,0 +1,12 @@
+<div class="modal-header ng-scope">
+    <h3 class="modal-title">Add employee</h3>
+</div>
+<div class="modal-body ng-scope">
+	<form name="forms.employeeForm" ng-submit="addEmployee()" ng-controller="EmployeeAddController" novalidate>
+	  <div class="form-group">
+	    <label for="employee_name">Employee name:</label>
+	    <input ng-model="employee.name" type="text" class="form-control" id="employee_name"  ng-required="true">
+	  </div>
+	  <button type="submit" class="btn btn-primary" ng-disabled="forms.employeeForm.$invalid">Submit</button>
+	</form>
+</div>

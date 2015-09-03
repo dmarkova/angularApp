@@ -1,9 +1,9 @@
-<div ng-hide="edit">{{value | date: "dd MMMM yyyy"}}</div>
+<div class="view-value" ng-hide="$parent.$parent.edit">{{value | date: "dd MMMM yyyy"}}</div>
 
-<div class="input-group" ng-show="edit" >
-	<input type="text" ng-model="value" datepicker-options="$parent.datepickerSettings.options" datepicker-popup="dd MMMM yyyy" class="form-control input" is-open="isOpen">
+<div class="input-group" ng-show="$parent.$parent.edit" >
+	<input type="text" ng-model="value" datepicker-options="$parent.datepickerSettings.options" datepicker-popup="dd MMMM yyyy" class="form-control input input-sm" is-open="isOpen">
 	<span class="input-group-btn">
-	  <button type="button" class="btn btn-default" ng-click="open({event: $event}, item)">
+	  <button type="button" class="btn btn-default btn-sm" ng-click="open({event: $event}, $parent.editablerow)">
 	  <i class="glyphicon glyphicon-calendar"></i></button>
 	</span>
 </div>

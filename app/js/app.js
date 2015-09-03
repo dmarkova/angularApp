@@ -11,7 +11,7 @@ capacityApp.config(function($stateProvider, $urlRouterProvider) {
       .state("main", { 
         abstract: true, 
         url:"/main", 
-        templateUrl:"partials/main.html" 
+        templateUrl:"partials/main.html"
       })
         .state("main.projects", { 
           url: '/projects', 

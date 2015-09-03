@@ -1,2 +1,2 @@
-<div ng-hide="edit" ng-bind="value"></div>
-<input ng-show="edit" ng-model="value" class="form-control">
+<div class="view-value" ng-hide="$parent.$parent.edit" ng-bind="value"></div>
+<input ng-show="$parent.$parent.edit" ng-model="value" class="form-control input-sm">

@@ -21,13 +21,23 @@ angular.module('capacityAppServices', [])
 	        "name": "Daria Markova",
 	        "vacations": [
 				{
-					"start":1420059600000,
-                	"end":1423319186000
+					"start":new Date(2015, 4, 10),
+                	"end":new Date(2015, 4, 23),
+                },
+                {
+					"start":new Date(2015, 11, 10),
+                	"end":new Date(2015, 11, 23),
                 }
 	        ],
 	        "dayoffs": [
+	        	{	
+	        		"date":new Date(2015, 3, 14),
+	        	},
 	        	{
-	        		"date":1423319186000
+	        		"date":new Date(2015, 8, 10),
+	        	},
+	        	{
+	        		"date":new Date(2015, 10, 12),
 	        	}
 	        ]
 	    }, 
@@ -36,13 +46,20 @@ angular.module('capacityAppServices', [])
 	        "name": "Stepan Zakharov",
 	        "vacations": [
 	        	{
-					"start":1420059600000,
-	                "end":1423319186000
+					"start":new Date(2015, 4, 15),
+	                "end":new Date(2015, 4, 15),
+	            },
+	            {
+					"start":new Date(2015, 9, 15),
+	                "end":new Date(2015, 9, 31),
 	            }
 	        ],
 	        "dayoffs": [
 	        	{
-	        		"date":1420127784000
+	        		"date":new Date(2015, 4, 15),
+	        	},
+	        	{
+	        		"date":new Date(2015, 10, 1),
 	        	}
 	        ]
 	    }, 
@@ -51,17 +68,17 @@ angular.module('capacityAppServices', [])
 	        "name": "Natalia Lastukhina",
 	        "vacations": [
 	        	{
-					"start":new Date(1984, 4, 15),
-	                "end":new Date(1984, 4, 15)
+					"start":new Date(2015, 4, 15),
+	                "end":new Date(2015, 6, 28)
 	            },
 	            {
-					"start":new Date(1984, 4, 15),
-	                "end":new Date(1984, 4, 15)
+					"start":new Date(2015, 5, 15),
+	                "end":new Date(2015, 9, 27)
 	            }
 	        ],
 	        "dayoffs": [
 	        	{
-	        		"date":1420127784000
+	        		"date":new Date(2015, 12, 27)
 	        	}
 	        ]
 	    }
@@ -104,28 +121,21 @@ angular.module('capacityAppServices', [])
 	                "capacity":  [
 	                    {
 	                    "value":0.75, 
-	                    "start":1420127784000,
-	                    "end":1422195986000
+	                    "start":new Date(2015, 2, 10),
+	                    "end":new Date(2015, 5, 10)
 	                    },
 	                    {
 	                    "value":0.25, 
-	                    "start":1423319186000,
-	                    "end":1423319186000
+	                    "start":new Date(2015, 5, 10),
+	                    "end":new Date(2015, 8, 13)
 	                    }
 	                ]
-	            },
-	            "stepanzakharov": {
-	                "capacity": [{
-	                    "value":1, 
-	                    "start":1420127784000,
-	                    "end":1423319186000
-	                }]
 	            },
 	            "natalialastukhina": {
 	            	"capacity": [{
 	                    "value":1, 
-	                    "start":1420127784000,
-	                    "end":1423319186000
+	                    "start":new Date(2015, 9, 10),
+	                    "end":new Date(2015, 10, 10)
 	                }]
 	            }
 	        }
@@ -142,14 +152,14 @@ angular.module('capacityAppServices', [])
 	            "dariamarkova": {
 	                "capacity":  [
 	                    {
-	                    "value":0.75, 
-	                    "start":1420127784000,
-	                    "end":1420386984000
+	                    "value":1, 
+	                    "start":new Date(2015, 1, 10),
+	                    "end":new Date(2015, 10, 10)
 	                    },
 	                    {
 	                    "value":0.25, 
-	                    "start":1420386984000,
-	                    "end":1420559784000
+	                    "start":new Date(2015, 10, 10),
+	                    "end":new Date(2015, 12, 10)
 	                    }
 	                ]
 	            }
@@ -166,12 +176,11 @@ angular.module('capacityAppServices', [])
 	        "employees": {
 	            "stepanzakharov": {
 	                "capacity": [{
-	                    "value":0.25, 
-	                    "start":1420127784000,
-	                    "end":1420559784000
+	                    "value":1, 
+	                    "start":new Date(2015, 1, 1),
+	                    "end":new Date(2015, 31, 12)
 	                }]
-	                
-	            }
+	            },
 	        }
 	    }, 
 	    { 
@@ -187,13 +196,13 @@ angular.module('capacityAppServices', [])
 	                "capacity":  [
 	                    {
 	                    "value":0.75, 
-	                    "start":1420127784000,
-	                    "end":1420386984000
+	                    "start":new Date(2015, 4, 4),
+	                    "end":new Date(2015, 9, 10)
 	                    },
 	                    {
 	                    "value":0.25, 
-	                    "start":1420386984000,
-	                    "end":1420559784000
+	                    "start":new Date(2015, 9, 10),
+	                    "end":new Date(2015, 10, 1)
 	                    }
 	                ]
 	            }
@@ -275,39 +284,40 @@ angular.module('capacityAppServices', [])
 			todayMonth = $filter('date')(today, "M");
 
 		if (actual && month == todayMonth) {
-    		return monthCounter - todayDay;
+    		return (monthCounter - todayDay) + 1;
     	} else {
     		return monthCounter;
     	}
     };
-    dateCalcService.weeksInMonth = function (month,calendar,actual) {
-		var 
-			monthName = $filter('monthName')(month),
+    dateCalcService.weeksInMonth = function (month,calendar,year,actual) {
+		var monthName = $filter('monthName')(month),
 			weekCounter,
 			today = new Date(),
-			todayWeek = dateCalcService.getWeek(today),
-			todayMonth = $filter('date')(today, "M");
+			todayMonth = $filter('date')(today, "M"),
+			firstDateWeek;
 
-		if (calendar) {
-			weekCounter = function() {
-				return _.filter(calendar, function(week){ 
-		        	return week.month==monthName; 
-		      	});
-			};
-			weekCounter = weekCounter().length;
+		weekCounter = function() {
+			return _.filter(calendar, function(week){ 
+	        	return week.month==monthName; 
+	      	});
+		};
+		weekCounter = weekCounter().length;
 
-			if (actual && month == todayMonth) {
-	    		return weekCounter - todayWeek + 1;
-	    	} else {
-	    		return weekCounter;
-	    	}
-	    }
+		if (actual && month == todayMonth) {
+			var firstDate = new Date('1' + monthName + year),
+				firstDateWeek = dateCalcService.getWeek(firstDate),
+				todayWeek = dateCalcService.getWeek(today);
+    		return weekCounter - (todayWeek - firstDate);
+    	} else {
+    		return weekCounter;
+    	}
+	 
     };
 
     dateCalcService.checkActualDay = function (day) {
     	var today = new Date();
     	today = today.setHours(0,0,0,0);
-    	return day.date < today;
+    	return day < today;
     };
     dateCalcService.checkActualMonth = function (month) {
     	var today = new Date(),

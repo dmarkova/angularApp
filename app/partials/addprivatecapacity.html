@@ -1,0 +1,68 @@
+<div class="modal-header ng-scope">
+    <h3 class="modal-title">Add employee capacity</h3>
+</div>
+<div class="modal-body ng-scope">
+	<form name="forms.privateCapacityForm" ng-submit="savePrivateCapacity()"  ng-controller="PrivateCapacityAddController" novalidate>
+		<div class="form-group">
+		  <label for="private_cap_employee">Employee:</label>
+		  <select id="private_cap_employee" class="form-control" ng-model="capEmployee.employee"
+		      ng-options="employee.id as employee.name for employee in employees" ng-required="true"></select>
+		</div>
+
+		<div class="btn-group form-group" role="group">
+		  <button type="button" class="btn btn-success" ng-click="showVacations($event)" ng-disabled="!capEmployee.employee">Add vacations</button>
+		  <button type="button" class="btn btn-success" ng-click="showDayoff($event)" ng-disabled="!capEmployee.employee">Add day off</button>
+		</div>
+
+		<div ng-if="vacationInit">
+			<h4>Vacations</h4>
+		    <div ng-repeat="vacation in capEmployee.vacations">
+		      <div class="row">
+		        <div class="form-group col-md-6">
+		          <label for="{{'vacation_start-'+$index}}">Start date:</label>
+		          <div class="input-group">
+		            <input id="{{'vacation_start-'+$index}}" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="vacation.start" is-open="vacation.openedStart" min-date="minDate" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" show-weeks="true" ng-required="true"/>
+		            <span class="input-group-btn">
+		              <button type="button" class="btn btn-default" ng-click="openStart($event, vacation)"><i class="glyphicon glyphicon-calendar"></i></button>
+		            </span>
+		          </div>
+		        </div>
+		        <div class="form-group col-md-6">
+		          <label for="{{'vacation_end-'+$index}}">End date:</label>
+		          <div class="input-group">
+		            <input id="{{'vacation_end-'+$index}}" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="vacation.end" is-open="vacation.openedEnd" min-date="vacation.start" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" show-weeks="true" ng-required="true" />
+		            <span class="input-group-btn">
+		              <button type="button" class="btn btn-default" ng-click="openEnd($event, vacation)"><i class="glyphicon glyphicon-calendar"></i></button>
+		            </span>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+
+		    <div class="text-right">
+		      <button type="button" class="btn btn-success btn-sm" ng-click="addVacation()"><i class="glyphicon glyphicon-plus"></i> Add more</button>
+		    </div>
+		</div>
+
+		<div ng-if="dayOffInit">
+			<h4>Day off</h4>
+		    <div ng-repeat="dayoff in capEmployee.dayoffs">
+				<div class="form-group">
+				  <label for="{{'dayoff_date-'+$index}}">Date:</label>
+				  <div class="input-group">
+				    <input id="{{'dayoff_date-'+$index}}" type="text" class="form-control" datepicker-popup="{{datepickerSettings.format}}" ng-model="dayoff.date" is-open="dayoff.openedStart" min-date="minDate" datepicker-options="datepickerSettings.options" ng-required="true" close-text="Close" show-weeks="true" ng-required="true"/>
+				    <span class="input-group-btn">
+				      <button type="button" class="btn btn-default" ng-click="openStart($event, dayoff)"><i class="glyphicon glyphicon-calendar"></i></button>
+				    </span>
+				  </div>
+				</div>
+		    </div>
+
+			<div class="text-right">
+		      <button type="button" class="btn btn-success btn-sm" ng-click="addDayoff()"><i class="glyphicon glyphicon-plus"></i> Add more</button>
+		    </div>
+		</div>
+
+		<button type="submit" class="btn btn-primary" ng-disabled="forms.privateCapacityForm.$invalid || (!dayOffInit && !vacationInit)">Submit</button>
+	</form>
+</div>

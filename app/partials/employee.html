@@ -1,63 +1,94 @@
 <h1>{{employee.name}}</h1>
 
+<div class="btn-group">
+  <button type="button" class="btn btn-success btn-sm" ng-click="showAll()">
+  	{{ expandBtnText }}
+  </button>
+</div>
 <div class="row">
-	<div class="col-md-6">
+    <div class="col-md-3" is-open ng-repeat="project in setActiveProjects()">
+    	<div class="panel panel-primary">	
+	    	<div class="panel-heading">
+			    <h4 class="panel-title">
+			      {{project.name}}
+			    </h4>
+			</div>
+	      	<table class="table" ng-controller="EmployeeEditController">
+	  			<thead>
+	  				<tr>
+	  					<th class="col-sm">Capacity</th>
+	  					<th>Start</th>
+	  					<th>End</th>
+	  					<th class="col-sm"></th>
+	  				</tr>
+	  			</thead>
+	  			<tbody>
+					<tr editablerow="capacity" editablearray="projectCapacity(project, employee)" ng-repeat="capacity in projectCapacity(project, employee)" ng-hide="checkActualDay(capacity.end) && actual" ng-class="{warning: checkActualDay(capacity.end)}">
+						<td>
+							<span editable="capacity.value"></span>
+						</td>
+						<td>
+							<span editabledate="capacity.start" is-open="capacity.openedStart" open="openStart(event, capacity)"></span>
+						</td>
+						<td>
+							<span editabledate="capacity.end" is-open="capacity.openedEnd" open="openEnd(event, capacity)"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+    </div>
+</div>
+
+<div class="row">
+	<div class="col-md-3">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">Vacations</h3>
 			</div>
-			<div class="panel-body" ng-controller="EmployeeEditController">
-				<div class="row" ng-repeat="vacation in employee.vacations">
-					<div class="form-group col-md-6">
-						<label for="{{'startdate-'+$index}}">Start:</label>
-						<div onshow="openStart(vacation)" onhide="closeStart(vacation)">{{vacation.start | date:'dd MMMM yyyy' || 'empty'}}</div>
-					</div>
-					<div class="form-group col-md-6">
-						<label for="{{'enddate-'+$index}}">End:</label>
-						<div onshow="openEnd(vacation)" onhide="closeEnd(vacation)">{{vacation.end | date:'dd MMMM yyyy' || 'empty'}}</div>
-					</div>
-					
-				</div>
-		  	</div>
+			<table class="table" ng-controller="EmployeeEditController">
+	  			<thead>
+	  				<tr>
+	  					<th>Start</th>
+	  					<th>End</th>
+	  					<th></th>
+	  				</tr>
+	  			</thead>
+	  			<tbody>
+		  			<tr editablerow="vacation" editablearray="employee.vacations" ng-repeat="vacation in employee.vacations" ng-hide="checkActualDay(vacation.end) && actual" ng-class="{warning: checkActualDay(vacation.end)}">
+						<td>
+							<span editabledate="vacation.start" is-open="vacation.openedStart" open="openStart(event, vacation)"></span>
+						</td>
+						<td>
+							<span editabledate="vacation.end" is-open="vacation.openedEnd" open="openEnd(event, vacation)"></span>
+						</td>
+						
+					</tr>
+				</tbody>
+		  	</table>
 		</div>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-3">
 		<div class="panel panel-default">
 		  <div class="panel-heading">
 		    <h3 class="panel-title">Day off</h3>
 		  </div>
-		  <div class="panel-body">
-		    <form name="{{'forms.employee-' + project.id + '-form'}}" ng-submit="editEmployee()" ng-controller="EmployeeEditController" novalidate >
-			<div class="row" ng-repeat="dayoff in employee.dayoffs">
-				<div class="form-group col-md-6">
-					<label for="{{'date-'+$index}}">Date:</label>
-					<div contenteditable>{{dayoff.date | date:'dd MMMM yyyy'}}</div>
-				</div>
-			</div>
-      	</form>
+		  <table class="table" ng-controller="EmployeeEditController">
+	  			<thead>
+	  				<tr>
+	  					<th>Date</th>
+	  					<th></th>
+	  				</tr>
+	  			</thead>
+	  			<tbody>
+					<tr editablerow="dayoff" editablearray="employee.dayoffs" ng-repeat="dayoff in employee.dayoffs" item="dayoff" ng-hide="checkActualDay(dayoff.date) && actual" ng-class="{warning: checkActualDay(dayoff.date)}">
+						<td>
+							<span editabledate="dayoff.date" is-open="dayoff.openedStart" open="openStart(event, dayoff)"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		  </div>
 		</div>
 	</div>
 </div>
-
-<h3>Assigned to the projects:</h3>
-<accordion close-others="true">
-    <accordion-group heading="{{project.name}}" is-open ng-repeat="project in activeProjects">
-      	<form name="{{'forms.employee-' + project.id + '-form'}}" ng-submit="editEmployee()" ng-controller="EmployeeEditController" novalidate >
-			<div editablerow ng-repeat="capacity in projectCapacity(project, employee)">
-				<div class="form-group col-md-3">
-					<label for="{{'capacity-'+$index}}">Capacity:</label>
-					<span editable="capacity.value" edit="$parent.edit"></span>
-				</div>
-				<div class="form-group col-md-3">
-					<label for="{{'startdate-'+$index}}">Start:</label>
-					<span editabledate="capacity.start" edit="$parent.edit" is-open="capacity.openedStart" open="openStart(event, capacity)" item="capacity"></span>
-				</div>
-				<div class="form-group col-md-3">
-					<label for="{{'enddate-'+$index}}">End:</label>
-					<span editabledate="capacity.end" edit="$parent.edit" is-open="capacity.openedEnd" open="openEnd(event, capacity)" item="capacity"></span>
-				</div>
-			</div>
-      	</form>
-    </accordion-group>
-</ul>
